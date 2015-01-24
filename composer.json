@@ -10,5 +10,8 @@
             "role": "Developer"
         }
     ],
+    "autoload": {
+        "psr-4": { "Wucdbm\\Bundle\\WucdbmBundle\\": "" }
+    },
     "license": "GPL-3.0"
 }
