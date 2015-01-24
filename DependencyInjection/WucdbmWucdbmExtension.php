@@ -1,6 +1,6 @@
 <?php
 
-namespace Wucdbm\WucdbmBundle\DependencyInjection;
+namespace Wucdbm\Bundle\WucdbmBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;

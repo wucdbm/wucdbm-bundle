@@ -5,10 +5,9 @@
     <services>
 
         <!-- Managers -->
-        <service id="wucdbm.manager.abstract" class="Wucdbm\WucdbmBundle\Manager\AbstractManager"
-                 abstract="true">
+        <service id="wucdbm.manager.abstract" class="Wucdbm\WucdbmBundle\Manager\AbstractManager" abstract="true">
             <call method="setContainer">
-                <argument type="service" id="service_container" />
+                <argument type="service" id="service_container"/>
             </call>
         </service>
 

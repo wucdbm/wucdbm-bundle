@@ -1,6 +1,6 @@
 <?php
 
-namespace Wucdbm\WucdbmBundle\Form\Filter;
+namespace Wucdbm\Bundle\WucdbmBundle\Form\Filter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

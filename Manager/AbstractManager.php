@@ -1,6 +1,6 @@
 <?php
 
-namespace Wucdbm\WucdbmBundle\Manager;
+namespace Wucdbm\Bundle\WucdbmBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerAware;
