@@ -1,0 +1,14 @@
+{
+    "name": "wucdbm/wucdbm-bundle",
+    "type": "symfony-bundle",
+    "description": "Utilities for Symfony2",
+    "keywords": ["wucdbm"],
+    "authors": [
+        {
+            "name": "Martin Kirilov",
+            "email": "wucdbm@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "license": "GPL-3.0"
+}
