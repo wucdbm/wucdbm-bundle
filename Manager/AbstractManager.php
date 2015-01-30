@@ -63,16 +63,18 @@ class AbstractManager extends ContainerAware {
      * @see Symfony\Component\Security\Core\Authentication\Token\TokenInterface::getUser()
      */
     public function getLoggedUser() {
-        if (!$this->container->has('security.context')) {
+
+        if (!$this->container->has('security.token_storage')) {
             throw new \LogicException('The SecurityBundle is not registered in your application.');
         }
 
-        if (null === $token = $this->container->get('security.context')->getToken()) {
-            return null;
+        if (null === $token = $this->container->get('security.token_storage')->getToken()) {
+            return;
         }
 
         if (!is_object($user = $token->getUser())) {
-            return null;
+            // e.g. anonymous authentication
+            return;
         }
 
         return $user;
