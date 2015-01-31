@@ -2,7 +2,7 @@
 
 namespace Wucdbm\Bundle\WucdbmBundle\Cache\Storage;
 
-use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\NoDataException;
+use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheGetFailedException;
 
 class MemcachedStorage implements StorageInterface {
 
@@ -39,7 +39,7 @@ class MemcachedStorage implements StorageInterface {
      *
      * @return mixed|null
      *
-     * @throws NoDataException
+     * @throws CacheGetFailedException
      */
     public function get($key, $strict = true, $default = null) {
         $value = $this->memcached->get($this->prefix . $key);
@@ -48,7 +48,7 @@ class MemcachedStorage implements StorageInterface {
             return $value;
         }
         if (\Memcached::RES_NOTFOUND == $resultCode && $strict) {
-            throw new NoDataException($key);
+            throw new CacheGetFailedException($key);
         }
         return $default;
     }
@@ -59,10 +59,14 @@ class MemcachedStorage implements StorageInterface {
      * @param  string $key
      * @param  mixed $value
      * @param  int $seconds
+     * @param  bool $strict
      * @return bool
      */
-    public function set($key, $value, $seconds) {
-        return $this->memcached->set($this->prefix . $key, $value, $seconds);
+    public function set($key, $value, $seconds, $strict = true) {
+        $set = $this->memcached->set($this->prefix . $key, $value, $seconds);
+        if (!$set && $strict) {
+
+        }
     }
 
     /**

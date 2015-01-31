@@ -2,7 +2,7 @@
 
 namespace Wucdbm\Bundle\WucdbmBundle\Cache\Storage;
 
-use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\NoDataException;
+use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheGetFailedException;
 
 class ArrayStorage implements StorageInterface {
 
@@ -22,14 +22,14 @@ class ArrayStorage implements StorageInterface {
      *
      * @return null
      *
-     * @throws NoDataException
+     * @throws CacheGetFailedException
      */
     public function get($key, $strict = true, $default = null) {
         if (array_key_exists($key, $this->storage)) {
             return $this->storage[$key];
         }
         if ($strict) {
-            throw new NoDataException($key);
+            throw new CacheGetFailedException($key);
         }
         return $default;
     }
@@ -40,9 +40,10 @@ class ArrayStorage implements StorageInterface {
      * @param  string $key
      * @param  mixed $value
      * @param  int $seconds
+     * @param  bool $strict
      * @return void
      */
-    public function set($key, $value, $seconds) {
+    public function set($key, $value, $seconds, $strict = true) {
         $this->storage[$key] = $value;
     }
 

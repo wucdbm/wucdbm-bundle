@@ -28,9 +28,10 @@ class NullStore implements StorageInterface {
      * @param  string $key
      * @param  mixed $value
      * @param  int $seconds
+     * @param  bool $strict
      * @return void
      */
-    public function set($key, $value, $seconds) {
+    public function set($key, $value, $seconds, $strict = true) {
         //
     }
 

@@ -2,7 +2,7 @@
 
 namespace Wucdbm\Bundle\WucdbmBundle\Cache\Storage;
 
-use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\NoDataException;
+use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheGetFailedException;
 
 interface StorageInterface {
 
@@ -15,25 +15,26 @@ interface StorageInterface {
      *
      * @return mixed
      *
-     * @throws NoDataException
+     * @throws CacheGetFailedException
      */
     public function get($key, $strict = true, $default = null);
 
     /**
      * Store an item in the cache for a given number of seconds.
      *
-     * @param  string  $key
-     * @param  mixed   $value
-     * @param  int     $seconds
+     * @param  string $key
+     * @param  mixed $value
+     * @param  int $seconds
+     * @param  bool $strict
      * @return void
      */
-    public function set($key, $value, $seconds);
+    public function set($key, $value, $seconds, $strict = true);
 
     /**
      * Increment the value of an item in the cache.
      *
-     * @param  string  $key
-     * @param  mixed   $value
+     * @param  string $key
+     * @param  mixed $value
      * @return int|bool
      */
     public function increment($key, $value = 1);
@@ -41,8 +42,8 @@ interface StorageInterface {
     /**
      * Decrement the value of an item in the cache.
      *
-     * @param  string  $key
-     * @param  mixed   $value
+     * @param  string $key
+     * @param  mixed $value
      * @return int|bool
      */
     public function decrement($key, $value = 1);
@@ -50,8 +51,8 @@ interface StorageInterface {
     /**
      * Store an item in the cache indefinitely.
      *
-     * @param  string  $key
-     * @param  mixed   $value
+     * @param  string $key
+     * @param  mixed $value
      * @return void
      */
     public function forever($key, $value);
@@ -59,7 +60,7 @@ interface StorageInterface {
     /**
      * Remove an item from the cache.
      *
-     * @param  string  $key
+     * @param  string $key
      * @return bool
      */
     public function remove($key);
