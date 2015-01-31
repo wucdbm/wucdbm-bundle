@@ -8,7 +8,6 @@ class AbstractCacheException extends \Exception {
 
     public function __construct($key) {
         $this->key = $key;
-        $this->message = 'No data was found for key '.$key;
     }
 
     /**
