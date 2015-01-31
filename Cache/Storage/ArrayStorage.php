@@ -4,7 +4,7 @@ namespace Wucdbm\Bundle\WucdbmBundle\Cache\Storage;
 
 use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\NoDataException;
 
-class ArrayStore implements StorageInterface {
+class ArrayStorage implements StorageInterface {
 
     /**
      * The array of stored values.

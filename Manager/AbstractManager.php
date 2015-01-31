@@ -6,43 +6,17 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormTypeInterface;
+use Wucdbm\Bundle\WucdbmBundle\Cache\Storage\ArrayStorage;
 
 class AbstractManager extends ContainerAware {
 
-    protected $cache = array();
+    /**
+     * @var ArrayStorage
+     */
+    protected $localCache;
 
-    protected function setCache($key, $id, $value) {
-        if (!isset($this->cache[$key])) {
-            $this->cache[$key] = array();
-        }
-        $this->cache[$key][$id] = $value;
-        return true;
-    }
-
-    protected function getCache($key, $id) {
-        if (!$this->hasCache($key, $id)) {
-            return null;
-        }
-        return $this->cache[$key][$id];
-    }
-
-    protected function hasCache($key, $id) {
-        if (!$this->hasCacheKey($key)) {
-            return false;
-        }
-        return isset($this->cache[$key][$id]);
-    }
-
-    protected function hasCacheKey($key) {
-        return isset($this->cache[$key]);
-    }
-
-    protected function deleteCache($key, $id) {
-        unset($this->cache[$key][$id]);
-    }
-
-    protected function deleteCacheKey($key) {
-        unset($this->cache[$key]);
+    public function __construct() {
+        $this->localCache = new ArrayStorage();
     }
 
     /**
