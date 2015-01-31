@@ -2,8 +2,8 @@
 
 namespace Wucdbm\Bundle\WucdbmBundle\Cache\Storage;
 
-use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheGetFailedException;
-use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheSetFailedException;
+use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheMissException;
+use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheSetException;
 use Wucdbm\Bundle\WucdbmBundle\Cache\Result\MultiGetResult;
 
 class MemcachedStorage extends AbstractStorage {
@@ -41,7 +41,7 @@ class MemcachedStorage extends AbstractStorage {
      *
      * @return mixed|null
      *
-     * @throws CacheGetFailedException
+     * @throws CacheMissException
      */
     public function get($key, $strict = true, $default = null) {
         $value = $this->memcached->get($this->prefix . $key);
@@ -50,7 +50,7 @@ class MemcachedStorage extends AbstractStorage {
             return $value;
         }
         if (\Memcached::RES_NOTFOUND == $resultCode && $strict) {
-            throw new CacheGetFailedException($key);
+            throw new CacheMissException($key);
         }
         return $default;
     }
@@ -77,14 +77,14 @@ class MemcachedStorage extends AbstractStorage {
      * @param  int $seconds
      * @param  bool $strict
      *
-     * @throws CacheSetFailedException
+     * @throws CacheSetException
      *
      * @return bool
      */
     public function set($key, $value, $seconds, $strict = true) {
         $set = $this->memcached->set($this->prefix . $key, $value, $seconds);
         if (!$set && $strict) {
-            throw new CacheSetFailedException($key);
+            throw new CacheSetException($key);
         }
     }
 
@@ -92,19 +92,19 @@ class MemcachedStorage extends AbstractStorage {
      * @param array $data
      * @param int $seconds
      * @param bool $strict
-     * @throws CacheSetFailedException
+     * @throws CacheSetException
      */
     public function setMulti($data, $seconds, $strict = true) {
         $set = $this->memcached->setMulti($data, $seconds);
         if (!$set && $strict) {
-            throw new CacheSetFailedException('multi');
+            throw new CacheSetException('multi');
         }
     }
 
     /**
      * @param array $data
      * @param bool $strict
-     * @throws CacheSetFailedException
+     * @throws CacheSetException
      */
     public function foreverMulti($data, $strict = true) {
         $this->setMulti($data, 0, $strict);

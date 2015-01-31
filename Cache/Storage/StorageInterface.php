@@ -2,9 +2,8 @@
 
 namespace Wucdbm\Bundle\WucdbmBundle\Cache\Storage;
 
-use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheGetFailedException;
-use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheSetFailedException;
-use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\MultiGetIncompleteException;
+use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheMissException;
+use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheSetException;
 
 interface StorageInterface {
 
@@ -17,7 +16,7 @@ interface StorageInterface {
      *
      * @return mixed
      *
-     * @throws CacheGetFailedException
+     * @throws CacheMissException
      */
     public function get($key, $strict = true, $default = null);
 
@@ -27,8 +26,6 @@ interface StorageInterface {
      * First param contains identifiers, which are imploded with the rest of the parameters to form keys
      *
      * @return mixed
-     *
-     * @throws MultiGetIncompleteException
      */
     public function getMulti();
 
@@ -40,7 +37,7 @@ interface StorageInterface {
      * @param  int $seconds
      * @param  bool $strict
      *
-     * @throws CacheSetFailedException
+     * @throws CacheSetException
      *
      * @return void
      */

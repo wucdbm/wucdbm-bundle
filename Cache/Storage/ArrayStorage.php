@@ -2,7 +2,7 @@
 
 namespace Wucdbm\Bundle\WucdbmBundle\Cache\Storage;
 
-use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheGetFailedException;
+use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheMissException;
 use Wucdbm\Bundle\WucdbmBundle\Cache\Result\MultiGetResult;
 
 class ArrayStorage extends AbstractStorage {
@@ -23,14 +23,14 @@ class ArrayStorage extends AbstractStorage {
      *
      * @return null
      *
-     * @throws CacheGetFailedException
+     * @throws CacheMissException
      */
     public function get($key, $strict = true, $default = null) {
         if (array_key_exists($key, $this->storage)) {
             return $this->storage[$key];
         }
         if ($strict) {
-            throw new CacheGetFailedException($key);
+            throw new CacheMissException($key);
         }
         return $default;
     }
@@ -42,7 +42,7 @@ class ArrayStorage extends AbstractStorage {
         foreach ($keys as $id => $key) {
             try {
                 $cached[$key] = $this->get($key);
-            } catch (CacheGetFailedException $ex) {
+            } catch (CacheMissException $ex) {
                 $cached[$key] = null;
                 $missed[$id] = $key;
             }

@@ -2,6 +2,6 @@
 
 namespace Wucdbm\Bundle\WucdbmBundle\Cache\Exception;
 
-class CacheGetFailedException extends AbstractCacheException {
+class CacheSetException extends AbstractCacheException {
 
 }
