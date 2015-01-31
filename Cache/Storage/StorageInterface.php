@@ -3,6 +3,8 @@
 namespace Wucdbm\Bundle\WucdbmBundle\Cache\Storage;
 
 use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheGetFailedException;
+use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheSetFailedException;
+use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\MultiGetIncompleteException;
 
 interface StorageInterface {
 
@@ -20,15 +22,57 @@ interface StorageInterface {
     public function get($key, $strict = true, $default = null);
 
     /**
+     * Retrieve an item from the cache by key.
+     *
+     * First param contains identifiers, which are imploded with the rest of the parameters to form keys
+     *
+     * @return mixed
+     *
+     * @throws MultiGetIncompleteException
+     */
+    public function getMulti();
+
+    /**
      * Store an item in the cache for a given number of seconds.
      *
      * @param  string $key
      * @param  mixed $value
      * @param  int $seconds
      * @param  bool $strict
+     *
+     * @throws CacheSetFailedException
+     *
      * @return void
      */
     public function set($key, $value, $seconds, $strict = true);
+
+    /**
+     * Store items in the cache for a given number of seconds.
+     *
+     * @param  array $data
+     * @param  int $seconds
+     * @param  bool $strict
+     * @return void
+     */
+    public function setMulti($data, $seconds, $strict = true);
+
+    /**
+     * Store an item in the cache indefinitely.
+     *
+     * @param  string $key
+     * @param  mixed $value
+     * @return void
+     */
+    public function forever($key, $value);
+
+    /**
+     * Store items in the cache indefinitely.
+     *
+     * @param  array $data
+     * @param  bool $strict
+     * @return void
+     */
+    public function foreverMulti($data, $strict = true);
 
     /**
      * Increment the value of an item in the cache.
@@ -47,15 +91,6 @@ interface StorageInterface {
      * @return int|bool
      */
     public function decrement($key, $value = 1);
-
-    /**
-     * Store an item in the cache indefinitely.
-     *
-     * @param  string $key
-     * @param  mixed $value
-     * @return void
-     */
-    public function forever($key, $value);
 
     /**
      * Remove an item from the cache.

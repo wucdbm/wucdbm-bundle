@@ -3,8 +3,10 @@
 namespace Wucdbm\Bundle\WucdbmBundle\Cache\Storage;
 
 use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheGetFailedException;
+use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheSetFailedException;
+use Wucdbm\Bundle\WucdbmBundle\Cache\Result\MultiGetResult;
 
-class MemcachedStorage implements StorageInterface {
+class MemcachedStorage extends AbstractStorage {
 
     /**
      * The Memcached instance.
@@ -53,6 +55,20 @@ class MemcachedStorage implements StorageInterface {
         return $default;
     }
 
+    public function getMulti() {
+        $keys = $this->generateKeys(func_get_args());
+        $null = null;
+        $missed = array();
+        $cached = $this->memcached->getMulti(array_keys($keys), $null, \Memcached::GET_PRESERVE_ORDER);
+        foreach ($cached as $key => $value) {
+            if (null === $value) {
+                $id = $keys[$key];
+                $missed[$id] = $key;
+            }
+        }
+        return new MultiGetResult($cached, $missed);
+    }
+
     /**
      * Store an item in the cache for a given number of minutes.
      *
@@ -60,16 +76,41 @@ class MemcachedStorage implements StorageInterface {
      * @param  mixed $value
      * @param  int $seconds
      * @param  bool $strict
+     *
+     * @throws CacheSetFailedException
+     *
      * @return bool
      */
     public function set($key, $value, $seconds, $strict = true) {
         $set = $this->memcached->set($this->prefix . $key, $value, $seconds);
         if (!$set && $strict) {
-
+            throw new CacheSetFailedException($key);
         }
     }
 
     /**
+     * @param array $data
+     * @param int $seconds
+     * @param bool $strict
+     * @throws CacheSetFailedException
+     */
+    public function setMulti($data, $seconds, $strict = true) {
+        $set = $this->memcached->setMulti($data, $seconds);
+        if (!$set && $strict) {
+            throw new CacheSetFailedException('multi');
+        }
+    }
+
+    /**
+     * @param array $data
+     * @param bool $strict
+     * @throws CacheSetFailedException
+     */
+    public function foreverMulti($data, $strict = true) {
+        $this->setMulti($data, 0, $strict);
+    }
+
+        /**
      * Increment the value of an item in the cache.
      *
      * @param  string $key

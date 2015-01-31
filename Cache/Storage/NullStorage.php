@@ -22,6 +22,10 @@ class NullStore implements StorageInterface {
         //
     }
 
+    public function getMulti() {
+        //
+    }
+
     /**
      * Store an item in the cache for a given number of minutes.
      *
@@ -32,6 +36,25 @@ class NullStore implements StorageInterface {
      * @return void
      */
     public function set($key, $value, $seconds, $strict = true) {
+        //
+    }
+
+    public function setMulti($data, $seconds, $strict = true) {
+        //
+    }
+
+    /**
+     * Store an item in the cache indefinitely.
+     *
+     * @param  string $key
+     * @param  mixed $value
+     * @return void
+     */
+    public function forever($key, $value) {
+        //
+    }
+
+    public function foreverMulti($data, $strict = true) {
         //
     }
 
@@ -54,17 +77,6 @@ class NullStore implements StorageInterface {
      * @return int
      */
     public function decrement($key, $value = 1) {
-        //
-    }
-
-    /**
-     * Store an item in the cache indefinitely.
-     *
-     * @param  string $key
-     * @param  mixed $value
-     * @return void
-     */
-    public function forever($key, $value) {
         //
     }
 

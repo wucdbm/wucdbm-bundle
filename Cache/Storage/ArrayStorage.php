@@ -3,8 +3,9 @@
 namespace Wucdbm\Bundle\WucdbmBundle\Cache\Storage;
 
 use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheGetFailedException;
+use Wucdbm\Bundle\WucdbmBundle\Cache\Result\MultiGetResult;
 
-class ArrayStorage implements StorageInterface {
+class ArrayStorage extends AbstractStorage {
 
     /**
      * The array of stored values.
@@ -34,6 +35,21 @@ class ArrayStorage implements StorageInterface {
         return $default;
     }
 
+    public function getMulti() {
+        $keys = $this->generateKeys(func_get_args());
+        $cached = array();
+        $missed = array();
+        foreach ($keys as $id => $key) {
+            try {
+                $cached[$key] = $this->get($key);
+            } catch (CacheGetFailedException $ex) {
+                $cached[$key] = null;
+                $missed[$id] = $key;
+            }
+        }
+        return new MultiGetResult($cached, $missed);
+    }
+
     /**
      * Store an item in the cache for a given number of minutes.
      *
@@ -45,6 +61,16 @@ class ArrayStorage implements StorageInterface {
      */
     public function set($key, $value, $seconds, $strict = true) {
         $this->storage[$key] = $value;
+    }
+
+    public function setMulti($data, $seconds, $strict = true) {
+        foreach ($data as $key => $value) {
+            $this->set($key, $value, $seconds);
+        }
+    }
+
+    public function foreverMulti($data, $strict = true) {
+        $this->setMulti($data, 0, $strict);
     }
 
     /**
