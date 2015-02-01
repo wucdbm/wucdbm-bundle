@@ -10,11 +10,13 @@ abstract class AbstractStorage implements StorageInterface {
     }
 
     /**
-     * @param $arguments
+     * Returns an array of $cacheKey => $objectId
+     *
      * @return array
      * @throws \Exception
      */
-    protected function generateKeys($arguments) {
+    public function generateKeys() {
+        $arguments = func_get_args();
         $ids = array_shift($arguments);
         if (!is_array($ids)) {
             throw new \Exception('First value must be an array.');

@@ -35,19 +35,16 @@ class ArrayStorage extends AbstractStorage {
         return $default;
     }
 
-    public function getMulti() {
-        $keys = $this->generateKeys(func_get_args());
-        $cached = array();
-        $missed = array();
-        foreach ($keys as $id => $key) {
+    public function getMulti($keys) {
+        $result = new MultiGetResult($keys);
+        foreach ($keys as $key => $id) {
             try {
-                $cached[$key] = $this->get($key);
+                $result->hit($key, $this->get($key));
             } catch (CacheMissException $ex) {
-                $cached[$key] = null;
-                $missed[$id] = $key;
+                $result->miss($id, $key);
             }
         }
-        return new MultiGetResult($cached, $missed);
+        return $result;
     }
 
     /**

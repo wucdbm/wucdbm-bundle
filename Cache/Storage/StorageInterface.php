@@ -23,11 +23,10 @@ interface StorageInterface {
     /**
      * Retrieve an item from the cache by key.
      *
-     * First param contains identifiers, which are imploded with the rest of the parameters to form keys
-     *
+     * @param $keys
      * @return mixed
      */
-    public function getMulti();
+    public function getMulti($keys);
 
     /**
      * Store an item in the cache for a given number of seconds.

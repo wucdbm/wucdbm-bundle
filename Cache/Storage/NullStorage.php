@@ -22,7 +22,7 @@ class NullStore implements StorageInterface {
         //
     }
 
-    public function getMulti() {
+    public function getMulti($keys) {
         //
     }
 

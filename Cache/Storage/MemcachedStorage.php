@@ -55,18 +55,20 @@ class MemcachedStorage extends AbstractStorage {
         return $default;
     }
 
-    public function getMulti() {
-        $keys = $this->generateKeys(func_get_args());
+    public function getMulti($keys) {
+        $result = new MultiGetResult($keys);
         $null = null;
-        $missed = array();
         $cached = $this->memcached->getMulti(array_keys($keys), $null, \Memcached::GET_PRESERVE_ORDER);
         foreach ($cached as $key => $value) {
             if (null === $value) {
                 $id = $keys[$key];
-                $missed[$id] = $key;
+//                $id = $result->getIdForKey($key);
+                $result->miss($key, $id);
+            } else {
+                $result->hit($key, $value);
             }
         }
-        return new MultiGetResult($cached, $missed);
+        return $result;
     }
 
     /**
