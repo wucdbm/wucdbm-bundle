@@ -62,7 +62,6 @@ class MemcachedStorage extends AbstractStorage {
         foreach ($cached as $key => $value) {
             if (null === $value) {
                 $id = $keys[$key];
-//                $id = $result->getIdForKey($key);
                 $result->miss($key, $id);
             } else {
                 $result->hit($key, $value);
