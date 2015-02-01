@@ -88,7 +88,7 @@ class MultiGetResult {
     }
 
     public function getMissedIds() {
-        return array_keys($this->missed);
+            return array_keys($this->missed);
     }
 
 }
