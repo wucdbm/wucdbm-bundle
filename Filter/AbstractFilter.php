@@ -99,6 +99,23 @@ class AbstractFilter {
         $this->pagination->setLimit($this->getLimit());
     }
 
+    /**
+     * TODO: Fix
+     * @param Request $request
+     */
+    protected function _loadVarsFromRequest(Request $request) {
+        $vars = $this->getProtectedVars();
+        foreach ($vars as $var) {
+            if ($request->query->get($var) !== null) {
+                $this->$var = $request->query->get($var);
+            }
+        }
+        $page = $request->get('page');
+        $this->setPage(is_numeric($page) ? $page : 1);
+        $this->pagination->setPage($this->getPage());
+        $this->pagination->setLimit($this->getLimit());
+    }
+
     public function load(Request $request, Form $form = null) {
         $defaultLimit = $this->getLimit();
         $get = $request->query->all();
@@ -107,6 +124,8 @@ class AbstractFilter {
         }
         if ($form) {
             $form->handleRequest($request);
+        } else {
+            $this->_loadVarsFromRequest($request);
         }
         $this->paginationParams = array_merge_recursive($get, $request->get('_route_params'));
         $this->pagination->setRoute($request->get('_route'));
