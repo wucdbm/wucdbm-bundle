@@ -35,10 +35,10 @@ class AbstractFilter {
     private $namespace = '';
 
     /**
-     * Request type - get or post
+     * Request type - GET or POST
      * @var string
      */
-    private $type = 'get';
+    private $type = 'GET';
 
     /**
      * @var Pagination
@@ -189,10 +189,10 @@ class AbstractFilter {
      * @return ParameterBag
      */
     public function getBagByType(Request $request, $type = null) {
-        if ('post' == $type) {
+        if ('POST' == $type) {
             return $request->request;
         }
-        if ('get' == $type) {
+        if ('GET' == $type) {
             return $request->query;
         }
         return $request->query;
