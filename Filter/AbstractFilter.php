@@ -3,13 +3,42 @@
 namespace Wucdbm\Bundle\WucdbmBundle\Filter;
 
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class AbstractFilter
+ * @package Wucdbm\Bundle\WucdbmBundle\Filter
+ */
 class AbstractFilter {
 
     private $page = 1;
 
     private $limit = 20;
+
+    /**
+     * Page Request var name
+     * @var string
+     */
+    private $pageVar = 'page';
+
+    /**
+     * Limit Request var name
+     * @var string
+     */
+    private $limitVar = 'limit';
+
+    /**
+     * String NS for loading vars from Symfony Request object
+     * @var string
+     */
+    private $namespace = '';
+
+    /**
+     * Request type - get or post
+     * @var string
+     */
+    private $type = 'get';
 
     /**
      * @var Pagination
@@ -83,60 +112,95 @@ class AbstractFilter {
     }
 
     /**
-     * @deprecated
      * @param Request $request
+     * @param null $type
+     * @param string $namespace
      */
-    public function loadFromRequest(Request $request) {
-        $vars = $this->getProtectedVars();
-        foreach ($vars as $var) {
-            if ($request->query->get($var) !== null) {
-                $this->$var = $request->query->get($var);
-            }
+    protected function _load(Request $request, $type = null, $namespace = '') {
+        $bag = $this->getBagByType($request, $type);
+        $defaultLimit = $this->getLimit();
+        $pageVar = $this->getVarPathForNamespace($namespace, $this->getPageVar());
+        $limitVar = $this->getVarPathForNamespace($namespace, $this->getLimitVar());
+        $page = $bag->get($pageVar, null, true);
+        $limit = $bag->get($limitVar, null, true);
+        if (!is_numeric($limit)) {
+            $bag->set($limitVar, $defaultLimit);
+            $limit = $defaultLimit;
         }
-        $page = $request->get('page');
-        $this->setPage(is_numeric($page) ? $page : 1);
-        $this->pagination->setPage($this->getPage());
-        $this->pagination->setLimit($this->getLimit());
+        $this->setPage($page);
+        $pagination = $this->getPagination();
+        $pagination->setPage($page);
+        $pagination->setLimit($limit);
+        $pagination->setParams(array_merge_recursive($bag->all(), $request->get('_route_params')));
+        $pagination->setRoute($request->get('_route'));
     }
 
     /**
-     * TODO: Fix
      * @param Request $request
+     * @param string $namespace
+     * @param null $type
+     * @return $this
      */
-    protected function _loadVarsFromRequest(Request $request) {
+    public function loadFromRequest(Request $request, $namespace = '', $type = null) {
+        if (null === $type) {
+            $type = $this->getType();
+        }
+
+        $this->_load($request, $type, $namespace);
+        $bag = $this->getBagByType($request, $this->getType());
+
         $vars = $this->getProtectedVars();
         foreach ($vars as $var) {
-            if ($request->query->get($var) !== null) {
-                $this->$var = $request->query->get($var);
+            $varPath = $this->getVarPathForNamespace($namespace, $var);
+            if ($val = $bag->get($varPath, null, true)) {
+                $this->$var = $val;
             }
         }
-        $page = $request->get('page');
-        $this->setPage(is_numeric($page) ? $page : 1);
-        $this->pagination->setPage($this->getPage());
-        $this->pagination->setLimit($this->getLimit());
-    }
 
-    public function load(Request $request, Form $form = null) {
-        $defaultLimit = $this->getLimit();
-        $get = $request->query->all();
-        if (!isset($get['limit']) || !is_numeric($get['limit'])) {
-            $request->query->set('limit', $defaultLimit);
-        }
-        if ($form) {
-            $form->handleRequest($request);
-        } else {
-            $this->_loadVarsFromRequest($request);
-        }
-        $this->paginationParams = array_merge_recursive($get, $request->get('_route_params'));
-        $this->pagination->setRoute($request->get('_route'));
-        if (isset($get['page']) && is_numeric($get['page'])) {
-            $this->setPage($get['page']);
-            $this->getPagination()->setPage($this->getPage());
-        }
-        $this->pagination->setLimit($this->getLimit());
         return $this;
     }
 
+    /**
+     * @param Request $request
+     * @param Form $form
+     * @return $this
+     */
+    public function load(Request $request, Form $form) {
+        $this->_load($request, $form->getConfig()->getMethod(), $form->getName());
+        $form->handleRequest($request);
+        return $this;
+    }
+
+    /**
+     * @param $namespace
+     * @param $var
+     * @return string
+     */
+    public function getVarPathForNamespace($namespace, $var) {
+        if ($namespace) {
+            return $namespace.'['.$var.']';
+        }
+        return $var;
+    }
+
+    /**
+     * @param Request $request
+     * @param $type
+     * @return ParameterBag
+     */
+    public function getBagByType(Request $request, $type = null) {
+        if ('post' == $type) {
+            return $request->request;
+        }
+        if ('get' == $type) {
+            return $request->query;
+        }
+        return $request->query;
+    }
+
+    /**
+     * @return array
+     */
     public function getProtectedVars() {
         $reflection = $this->getReflection();
         $vars = $reflection->getProperties(\ReflectionProperty::IS_PROTECTED);
@@ -147,6 +211,9 @@ class AbstractFilter {
         return $ret;
     }
 
+    /**
+     * @return array
+     */
     public function getProtectedValues() {
         $vars   = $this->getProtectedVars();
         $params = array();
@@ -160,6 +227,18 @@ class AbstractFilter {
         return $params;
     }
 
+    /**
+     * @return $this
+     */
+    public function enablePagination() {
+        $this->getPagination()->enable();
+        return $this;
+    }
+
+    /**
+     * @param $name
+     * @return bool
+     */
     public function has($name) {
         if ($this->$name === 0) {
             return true;
@@ -167,6 +246,11 @@ class AbstractFilter {
         return isset($this->$name) && $this->$name != '' && $this->$name != null;
     }
 
+    /**
+     * @param $name
+     * @param $value
+     * @throws \Exception
+     */
     public function __set($name, $value) {
         $reflection = $this->getReflection();
         if (!$reflection->hasProperty($name)) {
@@ -175,6 +259,11 @@ class AbstractFilter {
         $this->$name = $value;
     }
 
+    /**
+     * @param $name
+     * @return mixed
+     * @throws \Exception
+     */
     public function __get($name) {
         $reflection = $this->getReflection();
         if (!$reflection->hasProperty($name)) {
@@ -183,6 +272,11 @@ class AbstractFilter {
         return $this->$name;
     }
 
+    /**
+     * @param $name
+     * @param $arguments
+     * @return mixed
+     */
     public function __call($name, $arguments) {
         if (is_callable('get_'.$name)) {
             return call_user_func_array(array($this, 'get_'.$name), $arguments);
@@ -264,6 +358,62 @@ class AbstractFilter {
      */
     public function setLimit($limit) {
         $this->limit = $limit;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPageVar() {
+        return $this->pageVar;
+    }
+
+    /**
+     * @param string $pageVar
+     */
+    public function setPageVar($pageVar) {
+        $this->pageVar = $pageVar;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLimitVar() {
+        return $this->limitVar;
+    }
+
+    /**
+     * @param string $limitVar
+     */
+    public function setLimitVar($limitVar) {
+        $this->limitVar = $limitVar;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNamespace() {
+        return $this->namespace;
+    }
+
+    /**
+     * @param string $namespace
+     */
+    public function setNamespace($namespace) {
+        $this->namespace = $namespace;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType() {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType($type) {
+        $this->type = $type;
     }
 
 }

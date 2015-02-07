@@ -16,7 +16,7 @@ class Pagination {
 
     protected $route = null;
 
-    protected $routeParams = array();
+    protected $params = array();
 
     protected $range = 3;
 
@@ -155,14 +155,14 @@ class Pagination {
         return $params;
     }
 
-    public function getParams() {
-        $get = $this->filter->getPaginationParams();
-        if ($get) {
-            return $get;
-        }
-        return array();
-        return $this->filter->getProtectedValues();
-    }
+//    public function getParams() {
+//        $get = $this->filter->getPaginationParams();
+//        if ($get) {
+//            return $get;
+//        }
+//        return array();
+//        return $this->filter->getProtectedValues();
+//    }
 
     public function getVars($skip = null) {
         if (!is_array($skip) && $skip) {
@@ -235,11 +235,11 @@ class Pagination {
     }
 
     /**
-     * @param $routeParams
+     * @param $params
      * @return $this
      */
-    public function setRouteParams($routeParams) {
-        $this->routeParams = $routeParams;
+    public function setParams($params) {
+        $this->params = $params;
         return $this;
     }
 
@@ -339,8 +339,8 @@ class Pagination {
     /**
      * @return array
      */
-    public function getRouteParams() {
-        return $this->routeParams;
+    public function getParams() {
+        return $this->params;
     }
 
     /**
