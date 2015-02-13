@@ -118,14 +118,12 @@ class AbstractFilter {
      */
     protected function _load(Request $request, $type = null, $namespace = '') {
         $bag = $this->getBagByType($request, $type);
-        $defaultLimit = $this->getLimit();
         $pageVar = $this->getVarPathForNamespace($namespace, $this->getPageVar());
         $limitVar = $this->getVarPathForNamespace($namespace, $this->getLimitVar());
-        $page = $bag->get($pageVar, null, true);
-        $limit = $bag->get($limitVar, null, true);
-        if (!is_numeric($limit)) {
-            $bag->set($limitVar, $defaultLimit);
-            $limit = $defaultLimit;
+        $page = $bag->get($pageVar, 1, true);
+        $limit = $bag->get($limitVar, $this->getLimit(), true);
+        if (0 == $limit) {
+            $limit = null;
         }
         $this->setPage($page);
         $pagination = $this->getPagination();

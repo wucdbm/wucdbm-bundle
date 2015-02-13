@@ -26,7 +26,7 @@ class DateRangeFilterType extends AbstractType {
                     'class' => 'hidden max'
                 )
             ))
-            ->add('placeholder', 'filter_placeholder', array(
+            ->add('placeholder', 'wucdbm_filter_placeholder', array(
                 'attr' => array(
                     'rel' => 'tooltip',
                     'title' => $options['placeholder'],
@@ -57,7 +57,7 @@ class DateRangeFilterType extends AbstractType {
      * @return string
      */
     public function getName() {
-        return 'filter_date_range';
+        return 'wucdbm_filter_date_range';
     }
 
 }

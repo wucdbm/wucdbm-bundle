@@ -34,7 +34,7 @@ class PlaceholderType extends AbstractType {
      * @return string
      */
     public function getName() {
-        return 'filter_placeholder';
+        return 'wucdbm_filter_placeholder';
     }
 
     public function getParent() {

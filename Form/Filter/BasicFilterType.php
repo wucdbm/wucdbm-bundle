@@ -24,8 +24,6 @@ class BasicFilterType extends AbstractType {
                 500  => '500 Results',
                 1000 => '1000 Results'
             ),
-            //            'empty_value' => 'Всички резултати',
-            //            'empty_data'  => null,
             'label'   => 'Брой резултати',
             'attr'    => array(
                 'class' => 'select2'
@@ -51,7 +49,7 @@ class BasicFilterType extends AbstractType {
      * @return string
      */
     public function getName() {
-        return 'basic_filter_type';
+        return 'wucdbm_filter_basic';
     }
 
 }

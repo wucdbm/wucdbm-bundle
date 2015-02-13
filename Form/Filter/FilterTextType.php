@@ -42,7 +42,7 @@ class FilterTextType extends AbstractType {
      * @return string
      */
     public function getName() {
-        return 'filter_text';
+        return 'wucdbm_filter_text';
     }
 
     public function getParent() {
