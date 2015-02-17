@@ -45,7 +45,7 @@ class AbstractRepository extends EntityRepository {
 
         $builder->groupBy($groupBy);
         $query    = $builder->getQuery();
-        $entities = $query->getResult();
+        $entities = $query->getResult($filter->getHydrationMode());
         return $entities;
     }
 
