@@ -29,7 +29,7 @@ class MemcacheStorage extends AbstractStorage {
      */
     public function __construct(\Memcache $memcache, $prefix = '') {
         $this->memcache = $memcache;
-        $this->prefix    = strlen($prefix) > 0 ? $prefix . ':' : '';
+        parent::__construct($prefix);
     }
 
     /**

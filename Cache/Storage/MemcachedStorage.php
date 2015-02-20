@@ -14,12 +14,6 @@ class MemcachedStorage extends AbstractStorage {
      * @var \Memcached
      */
     protected $memcached;
-    /**
-     * A string that should be prepended to keys.
-     *
-     * @var string
-     */
-    protected $prefix;
 
     /**
      * Create a new Memcached store.
@@ -29,7 +23,7 @@ class MemcachedStorage extends AbstractStorage {
      */
     public function __construct(\Memcached $memcached, $prefix = '') {
         $this->memcached = $memcached;
-        $this->prefix    = strlen($prefix) > 0 ? $prefix . ':' : '';
+        parent::__construct($prefix);
     }
 
     /**
