@@ -38,7 +38,7 @@ class MemcachedStorage extends AbstractStorage {
      * @throws CacheMissException
      */
     public function get($key, $strict = true, $default = null) {
-        $value = $this->memcached->get($this->prefix . $key);
+        $value      = $this->memcached->get($this->prefix . $key);
         $resultCode = $this->memcached->getResultCode();
         if ($resultCode == \Memcached::RES_SUCCESS) {
             return $value;
@@ -51,7 +51,7 @@ class MemcachedStorage extends AbstractStorage {
 
     public function getMulti($keys) {
         $result = new MultiGetResult($keys);
-        $null = null;
+        $null   = null;
         $cached = $this->memcached->getMulti(array_keys($keys), $null, \Memcached::GET_PRESERVE_ORDER);
         foreach ($cached as $key => $value) {
             if (null === $value) {
@@ -105,7 +105,7 @@ class MemcachedStorage extends AbstractStorage {
         $this->setMulti($data, 0, $strict);
     }
 
-        /**
+    /**
      * Increment the value of an item in the cache.
      *
      * @param  string $key
