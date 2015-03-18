@@ -78,5 +78,4 @@ class AbstractManager extends ContainerAware {
     public function renderView($view, array $parameters = array()) {
         return $this->container->get('templating')->render($view, $parameters);
     }
-
 }
