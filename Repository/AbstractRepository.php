@@ -3,6 +3,7 @@
 namespace Wucdbm\Bundle\WucdbmBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Wucdbm\Bundle\WucdbmBundle\Filter\AbstractFilter;
@@ -47,6 +48,23 @@ class AbstractRepository extends EntityRepository {
         $query    = $builder->getQuery();
         $entities = $query->getResult($filter->getHydrationMode());
         return $entities;
+    }
+
+    /**
+     * @param QueryBuilder $builder
+     * @param AbstractFilter $filter
+     *
+     * @return mixed
+     */
+    public function returnFilteredEntity(QueryBuilder $builder, AbstractFilter $filter) {
+        $query = $builder->getQuery();
+        $query->setHydrationMode($filter->getHydrationMode());
+        try {
+            $entity = $query->getSingleResult();
+        } catch (NoResultException $e) {
+            return null;
+        }
+        return $entity;
     }
 
 }
