@@ -18,21 +18,21 @@ class PhpExtension extends \Twig_Extension {
         );
     }
 
-    public function get_class($object) {
+    public function get_class($object, $default = '') {
         $fqcn = $this->fqcn($object);
         if ($fqcn) {
             $parts = explode('\\', $fqcn);
             $short = array_pop($parts);
             return $short;
         }
-        return '';
+        return $default;
     }
 
-    public function fqcn($object) {
+    public function fqcn($object, $default = '') {
         if (is_object($object)) {
             return get_class($object);
         }
-        return '';
+        return $default;
     }
 
     public function getName() {
