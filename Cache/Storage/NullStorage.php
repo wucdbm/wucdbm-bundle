@@ -2,6 +2,9 @@
 
 namespace Wucdbm\Bundle\WucdbmBundle\Cache\Storage;
 
+use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheMissException;
+use Wucdbm\Bundle\WucdbmBundle\Cache\Result\MultiGetResult;
+
 class NullStorage extends AbstractStorage {
 
     /**
@@ -16,14 +19,21 @@ class NullStorage extends AbstractStorage {
      * @param $key
      * @param bool $strict
      * @param null $default
-     * @return void
+     * @return null
+     * @throws CacheMissException
      */
     public function get($key, $strict = true, $default = null) {
-        //
+        if ($strict) {
+            throw new CacheMissException($key);
+        }
+        return $default;
     }
 
     public function getMulti($keys) {
-        //
+        $result = new MultiGetResult($keys);
+        foreach ($keys as $key => $id) {
+            $result->miss($id, $key);
+        }
     }
 
     /**
