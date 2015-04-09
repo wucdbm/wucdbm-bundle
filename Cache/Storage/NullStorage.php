@@ -2,7 +2,7 @@
 
 namespace Wucdbm\Bundle\WucdbmBundle\Cache\Storage;
 
-class NullStore implements StorageInterface {
+class NullStorage implements StorageInterface {
 
     /**
      * The array of stored values.
