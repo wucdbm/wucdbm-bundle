@@ -77,5 +77,4 @@ class AbstractRepository extends EntityRepository {
         $builder->setMaxResults(1);
         return $builder->getQuery()->getOneOrNullResult($filter->getHydrationMode());
     }
-
 }
