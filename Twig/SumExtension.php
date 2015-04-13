@@ -43,7 +43,7 @@ class SumExtension extends \Twig_Extension {
     public function sum($arrayOrObject, $propertyPath, $expression = null) {
         $sum = 0;
         foreach ($arrayOrObject as $value) {
-            $shouldSum = false;
+            $shouldSum = true;
             if (null !== $expression) {
                 $shouldSum = $this->language->evaluate($expression, array(
                     'value' => $value
