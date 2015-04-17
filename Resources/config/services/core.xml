@@ -10,9 +10,7 @@
 
         <!-- Array cache instances -->
 
-        <service id="wucdbm.cache.local" class="Wucdbm\Bundle\WucdbmBundle\Cache\Storage\ArrayStorage" scope="prototype">
-            <argument>wucdbm</argument>
-        </service>
+        <service id="wucdbm.cache.local" class="Wucdbm\Bundle\WucdbmBundle\Cache\Storage\ArrayStorage" scope="prototype"/>
 
         <service id="wucdbm.cache.persistent" alias="wucdbm.cache.local"/>
 
