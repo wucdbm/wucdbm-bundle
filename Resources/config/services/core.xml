@@ -14,13 +14,14 @@
             <argument>wucdbm</argument>
         </service>
 
-        <service id="wucdbm.cache.persistent" alias="wucdbm.cache.local" />
+        <service id="wucdbm.cache.persistent" alias="wucdbm.cache.local"/>
 
         <!-- Managers -->
         <service id="wucdbm.manager.abstract" class="Wucdbm\Bundle\WucdbmBundle\Manager\AbstractManager" abstract="true">
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>
+            <call method="fetchServices"/>
             <call method="setLocalCache">
                 <argument type="service" id="wucdbm.cache.local" strict="false"/>
             </call>

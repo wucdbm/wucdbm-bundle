@@ -48,6 +48,10 @@ class AbstractManager extends ContainerAware {
         $this->cache = $cache;
     }
 
+    public function fetchServices() {
+
+    }
+
     /**
      * Shortcut for $doctrine->getManager
      * @return EntityManager

@@ -2,6 +2,7 @@
 
 namespace Wucdbm\Bundle\WucdbmBundle\Cache\Storage;
 
+/** TODO: Wrapped Storage - wraps any abstract storage into itself - useful when you want a different service to only prefix keys with something more than what you already have set as prefix in base implementation */
 abstract class AbstractStorage implements StorageInterface {
 
     /**
