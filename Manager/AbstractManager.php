@@ -6,17 +6,46 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormTypeInterface;
-use Wucdbm\Bundle\WucdbmBundle\Cache\Storage\ArrayStorage;
+use Wucdbm\Bundle\WucdbmBundle\Cache\Storage\AbstractStorage;
 
 class AbstractManager extends ContainerAware {
 
     /**
-     * @var ArrayStorage
+     * @var AbstractStorage
      */
     protected $localCache;
 
-    public function __construct() {
-        $this->localCache = new ArrayStorage();
+    /**
+     * @var AbstractStorage
+     */
+    protected $cache;
+
+    /**
+     * @return AbstractStorage
+     */
+    public function getLocalCache() {
+        return $this->localCache;
+    }
+
+    /**
+     * @param AbstractStorage $localCache
+     */
+    public function setLocalCache(AbstractStorage $localCache) {
+        $this->localCache = $localCache;
+    }
+
+    /**
+     * @return AbstractStorage
+     */
+    public function getCache() {
+        return $this->cache;
+    }
+
+    /**
+     * @param AbstractStorage $cache
+     */
+    public function setCache(AbstractStorage $cache) {
+        $this->cache = $cache;
     }
 
     /**
