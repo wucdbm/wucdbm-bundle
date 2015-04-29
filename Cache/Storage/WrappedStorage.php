@@ -4,26 +4,29 @@ namespace Wucdbm\Bundle\WucdbmBundle\Cache\Storage;
 
 use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheMissException;
 use Wucdbm\Bundle\WucdbmBundle\Cache\Exception\CacheSetException;
-use Wucdbm\Bundle\WucdbmBundle\Cache\Result\MultiGetResult;
 
-class MemcachedStorage extends AbstractStorage {
+class WrappedStorage extends AbstractStorage {
 
     /**
      * The Memcached instance.
      *
-     * @var \Memcached
+     * @var AbstractStorage
      */
-    protected $memcached;
+    protected $storage;
 
     /**
      * Create a new Memcached store.
      *
-     * @param  \Memcached $storage
+     * @param  AbstractStorage $storage
      * @param  string $prefix
      */
-    public function __construct(\Memcached $storage, $prefix = '') {
-        $this->memcached = $storage;
+    public function __construct(AbstractStorage $storage, $prefix = '') {
+        $this->storage = $storage;
         parent::__construct($prefix);
+    }
+
+    protected function makeKey($arguments) {
+        return $this->getPrefix() . $this->storage->makeKey($arguments);
     }
 
     /**
@@ -38,30 +41,11 @@ class MemcachedStorage extends AbstractStorage {
      * @throws CacheMissException
      */
     public function get($key, $strict = true, $default = null) {
-        $value      = $this->memcached->get($this->prefix . $key);
-        $resultCode = $this->memcached->getResultCode();
-        if ($resultCode == \Memcached::RES_SUCCESS) {
-            return $value;
-        }
-        if (\Memcached::RES_NOTFOUND == $resultCode && $strict) {
-            throw new CacheMissException($key);
-        }
-        return $default;
+        return $this->storage->get($key, $strict, $default);
     }
 
     public function getMulti($keys) {
-        $result = new MultiGetResult($keys);
-        $null   = null;
-        $cached = $this->memcached->getMulti(array_keys($keys), $null, \Memcached::GET_PRESERVE_ORDER);
-        foreach ($cached as $key => $value) {
-            if (null === $value) {
-                $id = $keys[$key];
-                $result->miss($id, $key);
-            } else {
-                $result->hit($key, $value);
-            }
-        }
-        return $result;
+        return $this->storage->getMulti($keys);
     }
 
     /**
@@ -77,10 +61,7 @@ class MemcachedStorage extends AbstractStorage {
      * @return bool
      */
     public function set($key, $value, $seconds, $strict = true) {
-        $set = $this->memcached->set($this->prefix . $key, $value, $seconds);
-        if (!$set && $strict) {
-            throw new CacheSetException($key);
-        }
+        $this->storage->set($key, $value, $seconds, $strict);
     }
 
     /**
@@ -90,10 +71,7 @@ class MemcachedStorage extends AbstractStorage {
      * @throws CacheSetException
      */
     public function setMulti($data, $seconds, $strict = true) {
-        $set = $this->memcached->setMulti($data, $seconds);
-        if (!$set && $strict) {
-            throw new CacheSetException('multi');
-        }
+        $this->storage->setMulti($data, $seconds, $strict);
     }
 
     /**
@@ -102,7 +80,7 @@ class MemcachedStorage extends AbstractStorage {
      * @throws CacheSetException
      */
     public function foreverMulti($data, $strict = true) {
-        $this->setMulti($data, 0, $strict);
+        $this->storage->setMulti($data, 0, $strict);
     }
 
     /**
@@ -113,7 +91,7 @@ class MemcachedStorage extends AbstractStorage {
      * @return int|bool
      */
     public function increment($key, $value = 1) {
-        return $this->memcached->increment($this->prefix . $key, $value);
+        return $this->storage->increment($key, $value);
     }
 
     /**
@@ -124,7 +102,7 @@ class MemcachedStorage extends AbstractStorage {
      * @return int|bool
      */
     public function decrement($key, $value = 1) {
-        return $this->memcached->decrement($this->prefix . $key, $value);
+        return $this->storage->decrement($key, $value);
     }
 
     /**
@@ -146,7 +124,7 @@ class MemcachedStorage extends AbstractStorage {
      * @return bool
      */
     public function remove($key) {
-        return $this->memcached->delete($this->prefix . $key);
+        return $this->storage->remove($key);
     }
 
     /**
@@ -155,24 +133,15 @@ class MemcachedStorage extends AbstractStorage {
      * @return void
      */
     public function flush() {
-        $this->memcached->flush();
+        $this->storage->flush();
     }
 
     /**
      * Get the underlying Memcached connection.
      *
-     * @return \Memcached
+     * @return AbstractStorage
      */
-    public function getMemcached() {
-        return $this->memcached;
-    }
-
-    /**
-     * Get the cache key prefix.
-     *
-     * @return string
-     */
-    public function getPrefix() {
-        return $this->prefix;
+    public function getStorage() {
+        return $this->storage;
     }
 }

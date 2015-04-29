@@ -48,4 +48,11 @@ abstract class AbstractStorage implements StorageInterface {
         return str_replace(' ', '_', implode('.', $arguments));
     }
 
+    /**
+     * @return string
+     */
+    public function getPrefix() {
+        return $this->prefix;
+    }
+
 }
