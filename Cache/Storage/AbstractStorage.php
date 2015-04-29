@@ -2,7 +2,7 @@
 
 namespace Wucdbm\Bundle\WucdbmBundle\Cache\Storage;
 
-/** TODO: Wrapped Storage - wraps any abstract storage into itself - useful when you want a different service to only prefix keys with something more than what you already have set as prefix in base implementation */
+/** TODO: Set prefix when generating key */
 abstract class AbstractStorage implements StorageInterface {
 
     /**
@@ -16,7 +16,7 @@ abstract class AbstractStorage implements StorageInterface {
      * @param string $prefix
      */
     public function __construct($prefix = '') {
-        $this->prefix = strlen($prefix) > 0 ? $prefix . ':' : '';
+        $this->prefix = strlen($prefix) > 0 ? str_replace(' ', '_', $prefix) . ':' : '';
     }
 
     public function generateKey() {
