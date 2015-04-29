@@ -16,10 +16,20 @@ class ControllerActionName extends \Twig_Extension {
         $this->container = $container;
     }
 
+    public function getFilters() {
+        return array(
+            'isContoller' => new \Twig_Filter_Method($this, 'isContoller'),
+            'isAction'    => new \Twig_Filter_Method($this, 'isAction')
+        );
+    }
+
+
     public function getFunctions() {
         return array(
             'controllerName' => new \Twig_Function_Method($this, 'controllerName'),
             'actionName'     => new \Twig_Function_Method($this, 'actionName'),
+            'isContoller'    => new \Twig_Function_Method($this, 'isContoller'),
+            'isAction'       => new \Twig_Function_Method($this, 'isAction'),
         );
     }
 
@@ -45,6 +55,20 @@ class ControllerActionName extends \Twig_Extension {
             preg_match($pattern, $this->container->get('request')->get('_controller'), $matches);
             return $matches[1];
         }
+    }
+
+    public function isContoller($controller, $print = '') {
+        if ($this->controllerName() == $controller) {
+            return $print;
+        }
+        return '';
+    }
+
+    public function isAction($action, $print = '') {
+        if ($this->actionName() == $action) {
+            return $print;
+        }
+        return '';
     }
 
     public function getName() {
