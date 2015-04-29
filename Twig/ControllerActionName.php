@@ -18,18 +18,20 @@ class ControllerActionName extends \Twig_Extension {
 
     public function getFilters() {
         return array(
-            'isContoller' => new \Twig_Filter_Method($this, 'isContoller'),
-            'isAction'    => new \Twig_Filter_Method($this, 'isAction')
+            'isContoller'           => new \Twig_Filter_Method($this, 'isContoller'),
+            'isAction'              => new \Twig_Filter_Method($this, 'isAction'),
+            'isActionAndController' => new \Twig_Filter_Method($this, 'isActionAndController')
         );
     }
 
 
     public function getFunctions() {
         return array(
-            'controllerName' => new \Twig_Function_Method($this, 'controllerName'),
-            'actionName'     => new \Twig_Function_Method($this, 'actionName'),
-            'isContoller'    => new \Twig_Function_Method($this, 'isContoller'),
-            'isAction'       => new \Twig_Function_Method($this, 'isAction'),
+            'controllerName'        => new \Twig_Function_Method($this, 'controllerName'),
+            'actionName'            => new \Twig_Function_Method($this, 'actionName'),
+            'isContoller'           => new \Twig_Function_Method($this, 'isContoller'),
+            'isAction'              => new \Twig_Function_Method($this, 'isAction'),
+            'isActionAndController' => new \Twig_Function_Method($this, 'isActionAndController'),
         );
     }
 
