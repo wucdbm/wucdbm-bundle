@@ -104,6 +104,13 @@ class ControllerActionName extends \Twig_Extension {
         return $this->actionName() == $action;
     }
 
+    public function isActionAndController($action, $controller, $print = '') {
+        if ($this->isAction($action) && $this->_isController($controller)) {
+            return $print;
+        }
+        return '';
+    }
+
     public function getName() {
         return 'controller_action_name';
     }
