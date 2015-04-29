@@ -185,12 +185,8 @@ class AbstractFilter {
         }
         $transformers = $this->getDataTransformers($field);
         foreach ($transformers as $transformer) {
-//            var_dump(get_class($transformer));
-//            continue;
             if ($transformer instanceof ConditionalDataTransformer) {
-//                var_dump(get_class($transformer));
                 if ($transformer->isEligible($value)) {
-//                    var_dump('will eligible transform ' . $field . ' to ' . $value);
                     return $transformer->transform($value);
                 }
                 continue;
@@ -198,7 +194,6 @@ class AbstractFilter {
             if ($transformer instanceof DataTransformerInterface) {
                 return $transformer->transform($value);
             }
-//            var_dump('will transform ' . $field . ' to ' . $value);
         }
         return $value;
     }
@@ -209,12 +204,8 @@ class AbstractFilter {
         }
         $transformers = $this->getDataTransformers($field);
         foreach ($transformers as $transformer) {
-//            var_dump(get_class($transformer));
-//            continue;
             if ($transformer instanceof ConditionalDataTransformer) {
-//                var_dump(get_class($transformer));
-                if ($transformer->isEligible($value)) {
-//                    var_dump('will eligible transform ' . $field . ' to ' . $value);
+                if ($transformer->isReverseEligible($value)) {
                     return $transformer->reverseTransform($value);
                 }
                 continue;
@@ -222,7 +213,6 @@ class AbstractFilter {
             if ($transformer instanceof DataTransformerInterface) {
                 return $transformer->reverseTransform($value);
             }
-//            var_dump('will transform ' . $field . ' to ' . $value);
         }
         return $value;
     }

@@ -32,4 +32,8 @@ class ConditionalDataTransformer implements DataTransformerInterface {
         return true;
     }
 
+    public function isReverseEligible($value) {
+        return true;
+    }
+
 }
