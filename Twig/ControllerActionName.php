@@ -64,17 +64,41 @@ class ControllerActionName extends \Twig_Extension {
     }
 
     public function isContoller($controller, $print = '') {
-        if ($this->controllerName() == $controller) {
-            return $print;
+        if (is_array($controller)) {
+            foreach ($controller as $ctrl) {
+                if ($this->_isController($ctrl)) {
+                    return $print;
+                }
+            }
+        } else if (is_string($controller)) {
+            if ($this->_isController($controller)) {
+                return $print;
+            }
         }
         return '';
     }
 
+    protected function _isController($controller) {
+        return $this->controllerName() == $controller;
+    }
+
     public function isAction($action, $print = '') {
-        if ($this->actionName() == $action) {
-            return $print;
+        if (is_array($action)) {
+            foreach ($action as $act) {
+                if ($this->_isAction($act)) {
+                    return $print;
+                }
+            }
+        } else if (is_string($action)) {
+            if ($this->_isAction($action)) {
+                return $print;
+            }
         }
         return '';
+    }
+
+    protected function _isAction($action) {
+        return $this->actionName() == $action;
     }
 
     public function getName() {
