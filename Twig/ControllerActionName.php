@@ -41,7 +41,10 @@ class ControllerActionName extends \Twig_Extension {
             $pattern = "#Controller\\\([a-zA-Z]*)Controller#";
             $matches = array();
             preg_match($pattern, $this->container->get('request')->get('_controller'), $matches);
-            return strtolower($matches[1]);
+            if (isset($matches[1])) {
+                return strtolower($matches[1]);
+            }
+            return '';
         }
     }
 
@@ -53,7 +56,10 @@ class ControllerActionName extends \Twig_Extension {
             $pattern = "#::([a-zA-Z]*)Action#";
             $matches = array();
             preg_match($pattern, $this->container->get('request')->get('_controller'), $matches);
-            return $matches[1];
+            if (isset($matches[1])) {
+                return strtolower($matches[1]);
+            }
+            return '';
         }
     }
 
