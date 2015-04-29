@@ -38,11 +38,14 @@ class ControllerActionName extends \Twig_Extension {
      */
     public function controllerName() {
         if (null !== $this->container->get('request')) {
-            $pattern = "#Controller\\\([a-zA-Z]*)Controller#";
-            $matches = array();
-            preg_match($pattern, $this->container->get('request')->get('_controller'), $matches);
+            $string     = $this->container->get('request')->get('_controller');
+            $parts      = explode('::', $string);
+            $controller = $parts[0];
+            $pattern    = "#Controller\\\([a-zA-Z\\\]*)Controller#";
+            $matches    = array();
+            preg_match($pattern, $controller, $matches);
             if (isset($matches[1])) {
-                return strtolower($matches[1]);
+                return strtolower(str_replace('\\', '_', $matches[1]));
             }
             return '';
         }
