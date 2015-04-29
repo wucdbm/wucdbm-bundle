@@ -107,7 +107,7 @@ class ControllerActionName extends \Twig_Extension {
     }
 
     public function isActionAndController($action, $controller, $print = '') {
-        if ($this->isAction($action) && $this->_isController($controller)) {
+        if ($this->_isAction($action) && $this->_isController($controller)) {
             return $print;
         }
         return '';
