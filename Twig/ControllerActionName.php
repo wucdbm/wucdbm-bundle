@@ -18,7 +18,7 @@ class ControllerActionName extends \Twig_Extension {
 
     public function getFilters() {
         return array(
-            'isContoller'           => new \Twig_Filter_Method($this, 'isContoller'),
+            'isController'          => new \Twig_Filter_Method($this, 'isController'),
             'isAction'              => new \Twig_Filter_Method($this, 'isAction'),
             'isActionAndController' => new \Twig_Filter_Method($this, 'isActionAndController')
         );
@@ -29,7 +29,7 @@ class ControllerActionName extends \Twig_Extension {
         return array(
             'controllerName'        => new \Twig_Function_Method($this, 'controllerName'),
             'actionName'            => new \Twig_Function_Method($this, 'actionName'),
-            'isContoller'           => new \Twig_Function_Method($this, 'isContoller'),
+            'isController'          => new \Twig_Function_Method($this, 'isController'),
             'isAction'              => new \Twig_Function_Method($this, 'isAction'),
             'isActionAndController' => new \Twig_Function_Method($this, 'isActionAndController'),
         );
@@ -68,7 +68,7 @@ class ControllerActionName extends \Twig_Extension {
         }
     }
 
-    public function isContoller($controller, $print = '') {
+    public function isController($controller, $print = '') {
         if (is_array($controller)) {
             foreach ($controller as $ctrl) {
                 if ($this->_isController($ctrl)) {
