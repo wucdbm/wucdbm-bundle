@@ -22,11 +22,7 @@ class WrappedStorage extends AbstractStorage {
      */
     public function __construct(AbstractStorage $storage, $prefix = '') {
         $this->storage = $storage;
-        parent::__construct($prefix);
-    }
-
-    protected function makeKey($arguments) {
-        return $this->getPrefix() . $this->storage->makeKey($arguments);
+        parent::__construct($storage->getPrefix() . $prefix);
     }
 
     /**

@@ -110,13 +110,4 @@ class NullStorage extends AbstractStorage {
         //
     }
 
-    /**
-     * Get the cache key prefix.
-     *
-     * @return string
-     */
-    public function getPrefix() {
-        return '';
-    }
-
 }

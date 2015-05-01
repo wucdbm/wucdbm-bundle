@@ -127,13 +127,4 @@ class ArrayStorage extends AbstractStorage {
         $this->storage = array();
     }
 
-    /**
-     * Get the cache key prefix.
-     *
-     * @return string
-     */
-    public function getPrefix() {
-        return '';
-    }
-
 }

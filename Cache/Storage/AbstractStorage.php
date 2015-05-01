@@ -16,7 +16,7 @@ abstract class AbstractStorage implements StorageInterface {
      * @param string $prefix
      */
     public function __construct($prefix = '') {
-        $this->prefix = strlen($prefix) > 0 ? str_replace(' ', '_', $prefix) . ':' : '';
+        $this->prefix = $this->cleanupPrefix($prefix);
     }
 
     public function generateKey() {
@@ -45,7 +45,11 @@ abstract class AbstractStorage implements StorageInterface {
     }
 
     protected function makeKey($arguments) {
-        return str_replace(' ', '_', implode('.', $arguments));
+        return $this->getPrefix() . str_replace(' ', '_', implode('.', $arguments));
+    }
+
+    protected function cleanupPrefix($prefix) {
+        return strlen($prefix) > 0 ? str_replace(' ', '_', $prefix) . ':' : '';
     }
 
     /**

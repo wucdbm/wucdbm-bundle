@@ -44,7 +44,7 @@ class MemcacheStorage extends AbstractStorage {
      * @throws CacheMissException
      */
     public function get($key, $strict = true, $default = null) {
-        $value = $this->memcache->get($this->prefix . $key);
+        $value = $this->memcache->get($key);
         if (false === $value && $strict) {
             throw new CacheMissException($key);
         }
@@ -76,7 +76,7 @@ class MemcacheStorage extends AbstractStorage {
      * @return bool
      */
     public function set($key, $value, $seconds, $strict = true) {
-        $set = $this->memcache->set($this->prefix . $key, $value, $seconds);
+        $set = $this->memcache->set($key, $value, $seconds);
         if (!$set && $strict) {
             throw new CacheSetException($key);
         }
@@ -111,7 +111,7 @@ class MemcacheStorage extends AbstractStorage {
      * @return int|bool
      */
     public function increment($key, $value = 1) {
-        return $this->memcache->increment($this->prefix . $key, $value);
+        return $this->memcache->increment($key, $value);
     }
 
     /**
@@ -122,7 +122,7 @@ class MemcacheStorage extends AbstractStorage {
      * @return int|bool
      */
     public function decrement($key, $value = 1) {
-        return $this->memcache->decrement($this->prefix . $key, $value);
+        return $this->memcache->decrement($key, $value);
     }
 
     /**
@@ -144,7 +144,7 @@ class MemcacheStorage extends AbstractStorage {
      * @return bool
      */
     public function remove($key) {
-        return $this->memcache->delete($this->prefix . $key);
+        return $this->memcache->delete($key);
     }
 
     /**
@@ -163,14 +163,5 @@ class MemcacheStorage extends AbstractStorage {
      */
     public function getMemcache() {
         return $this->memcache;
-    }
-
-    /**
-     * Get the cache key prefix.
-     *
-     * @return string
-     */
-    public function getPrefix() {
-        return $this->prefix;
     }
 }

@@ -38,7 +38,7 @@ class MemcachedStorage extends AbstractStorage {
      * @throws CacheMissException
      */
     public function get($key, $strict = true, $default = null) {
-        $value      = $this->memcached->get($this->prefix . $key);
+        $value      = $this->memcached->get($key);
         $resultCode = $this->memcached->getResultCode();
         if ($resultCode == \Memcached::RES_SUCCESS) {
             return $value;
@@ -77,7 +77,7 @@ class MemcachedStorage extends AbstractStorage {
      * @return bool
      */
     public function set($key, $value, $seconds, $strict = true) {
-        $set = $this->memcached->set($this->prefix . $key, $value, $seconds);
+        $set = $this->memcached->set($key, $value, $seconds);
         if (!$set && $strict) {
             throw new CacheSetException($key);
         }
@@ -113,7 +113,7 @@ class MemcachedStorage extends AbstractStorage {
      * @return int|bool
      */
     public function increment($key, $value = 1) {
-        return $this->memcached->increment($this->prefix . $key, $value);
+        return $this->memcached->increment($key, $value);
     }
 
     /**
@@ -124,7 +124,7 @@ class MemcachedStorage extends AbstractStorage {
      * @return int|bool
      */
     public function decrement($key, $value = 1) {
-        return $this->memcached->decrement($this->prefix . $key, $value);
+        return $this->memcached->decrement($key, $value);
     }
 
     /**
@@ -146,7 +146,7 @@ class MemcachedStorage extends AbstractStorage {
      * @return bool
      */
     public function remove($key) {
-        return $this->memcached->delete($this->prefix . $key);
+        return $this->memcached->delete($key);
     }
 
     /**
@@ -165,14 +165,5 @@ class MemcachedStorage extends AbstractStorage {
      */
     public function getMemcached() {
         return $this->memcached;
-    }
-
-    /**
-     * Get the cache key prefix.
-     *
-     * @return string
-     */
-    public function getPrefix() {
-        return $this->prefix;
     }
 }
