@@ -13,7 +13,7 @@ class JsonMemcachedSessionHandler extends ContainerAware implements \SessionHand
     /**
      * @var string
      */
-    protected $prefix = 'session';
+    protected $key = 'session';
 
     /**
      * @var int
@@ -23,26 +23,13 @@ class JsonMemcachedSessionHandler extends ContainerAware implements \SessionHand
     /**
      * @var MemcachedStorage
      */
-    protected $memcached;
+    protected $mem;
 
-    public function __construct(MemcachedStorage $memcached, ContainerInterface $container, $prefix = 'session', $ttl = 3600) {
-        $this->memcached = $memcached;
+    public function __construct(MemcachedStorage $mem, ContainerInterface $container, $key = 'session', $ttl = 3600) {
+        $this->mem = $mem;
         $this->setContainer($container);
-        $this->prefix = $prefix;
-        $this->ttl    = $ttl;
-
-//        $memcached->setOption(\Memcached::OPT_COMPRESSION, false);
-//        $this->memcached = $memcached;
-//        $this->doctrine  = $doctrine;
-//        $this->container = $container;
-//        session_set_save_handler(
-//            array($this, "open"),
-//            array($this, "close"),
-//            array($this, "read"),
-//            array($this, "write"),
-//            array($this, "destroy"),
-//            array($this, "gc")
-//        );
+        $this->key = $key;
+        $this->ttl = $ttl;
     }
 
     /**
@@ -72,7 +59,7 @@ class JsonMemcachedSessionHandler extends ContainerAware implements \SessionHand
     }
 
     public function getKey($id) {
-        return $this->memcached->generateKey($this->prefix, $id);
+        return $this->mem->generateKey($this->key, $id);
     }
 
 
@@ -88,7 +75,6 @@ class JsonMemcachedSessionHandler extends ContainerAware implements \SessionHand
      * @return boolean True if everything succeed
      */
     public function open($savePath, $sessionName) {
-//        $this->prefix = ini_get('session.gc_maxlifetime');
         return true;
     }
 
@@ -100,8 +86,12 @@ class JsonMemcachedSessionHandler extends ContainerAware implements \SessionHand
     public function read($id) {
         $tmp      = $_SESSION;
         $key      = $this->getKey($id);
-        $_SESSION = json_decode($this->memcached->get($key, false, ''), true);
+        $_SESSION = json_decode($this->mem->get($key, false, ''), true);
 
+
+        // TODO: replace all of this with custom session data modifiers to be executed one by one
+        // TODO: Create CachedSessionHandler that accepts AbstractStorage as its storage
+        // TODO: Refactor this to extend CachedSessionHandler and use JSON encode/decode where needed
         $user = $this->getUser();
 
         if ($user instanceof UserInterface) {
@@ -116,31 +106,6 @@ class JsonMemcachedSessionHandler extends ContainerAware implements \SessionHand
             );
             $_SESSION['user'] = $userData;
         }
-
-//        if (isset($_SESSION['_sf2_attributes']['_security_musix_area'])) {
-//            $security_token = unserialize($_SESSION['_sf2_attributes']['_security_musix_area']);
-//            $user_id        = $security_token->getUser()->getId();
-//            $em             = $this->doctrine->getManager();
-//            $user           = $em->getRepository("\Users\Entity\User")->findOneById($user_id);
-//            $roles          = $security_token->getRoles();
-//            $roles_array    = array();
-//            if (!empty($roles)) {
-//                foreach ($roles as $r) {
-//                    $roles_array[] = array(
-//                        'id'   => $r->getId(),
-//                        'role' => $r->getRole(),
-//                        'name' => $r->getName()
-//                    );
-//                }
-//            }
-//            $userData = array(
-//                'id'       => $user->getId(),
-//                'username' => $user->getUsername(),
-//                'roles'    => $roles_array
-//            );
-//
-//            $_SESSION['user'] = $userData;
-//        }
 
         if (isset($_SESSION) && !empty($_SESSION) && $_SESSION != null) {
             $new_data = session_encode();
@@ -162,7 +127,7 @@ class JsonMemcachedSessionHandler extends ContainerAware implements \SessionHand
         $newData  = $_SESSION;
         $_SESSION = $tmp;
         $key      = $this->getKey($id);
-        return $this->memcached->set($key, json_encode($newData), $this->ttl);
+        return $this->mem->set($key, json_encode($newData), $this->ttl);
     }
 
     /**
@@ -172,7 +137,7 @@ class JsonMemcachedSessionHandler extends ContainerAware implements \SessionHand
      */
     public function destroy($id) {
         $key = $this->getKey($id);
-        return $this->memcached->remove($key);
+        return $this->mem->remove($key);
     }
 
     /**
