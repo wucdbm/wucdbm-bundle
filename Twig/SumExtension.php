@@ -40,7 +40,7 @@ class SumExtension extends \Twig_Extension {
         );
     }
 
-    public function sum($arrayOrObject, $propertyPath, $expression = null) {
+    public function sum($arrayOrObject, $propertyPath = null, $expression = null) {
         $sum = 0;
         foreach ($arrayOrObject as $value) {
             $shouldSum = true;
@@ -50,8 +50,10 @@ class SumExtension extends \Twig_Extension {
                 ));
             }
             if ($shouldSum) {
-                $data = $this->accessor->getValue($value, $propertyPath);
-                $sum += $data;
+                if ($propertyPath) {
+                    $value = $this->accessor->getValue($value, $propertyPath);
+                }
+                $sum += $value;
             }
         }
         return $sum;
@@ -60,7 +62,7 @@ class SumExtension extends \Twig_Extension {
     public function count($arrayOrObject, $expression = null) {
         $count = 0;
         foreach ($arrayOrObject as $value) {
-            $shouldSum = false;
+            $shouldSum = true;
             if (null !== $expression) {
                 $shouldSum = $this->language->evaluate($expression, array(
                     'value' => $value
