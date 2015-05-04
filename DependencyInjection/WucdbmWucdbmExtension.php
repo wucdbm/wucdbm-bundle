@@ -19,6 +19,7 @@ class WucdbmWucdbmExtension extends Extension {
             new FileLocator(__DIR__.'/../Resources/config')
         );
         $loader->load('services/core.xml');
+        $loader->load('services/expression.xml');
         $loader->load('services/form/filter_types.xml');
         $loader->load('services/twig.xml');
 
