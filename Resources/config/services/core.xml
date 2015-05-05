@@ -9,9 +9,9 @@
     <services>
 
         <!-- Array cache instance -->
-        <service id="wucdbm.cache.local" class="Wucdbm\Bundle\WucdbmBundle\Cache\Storage\ArrayStorage" scope="prototype"/>
+        <service id="wucdbm.cache.local" class="Wucdbm\Bundle\WucdbmBundle\Cache\Storage\ArrayStorage" scope="prototype" public="false"/>
         <!-- Alias your own cache implementation of Wucdbm\Bundle\WucdbmBundle\Cache\Storage\AbstractStorage to this -->
-        <service id="wucdbm.cache.persistent" alias="wucdbm.cache.local"/>
+        <service id="wucdbm.cache.persistent" alias="wucdbm.cache.local" public="false"/>
 
         <!-- Managers -->
         <service id="wucdbm.manager.abstract" class="Wucdbm\Bundle\WucdbmBundle\Manager\AbstractManager" abstract="true">
