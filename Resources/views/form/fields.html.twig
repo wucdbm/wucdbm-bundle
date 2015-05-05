@@ -1,0 +1,156 @@
+{% use "bootstrap_3_layout.html.twig" %}
+
+{#{% block form_end %}#}
+{#{% spaceless %}#}
+    {#{% if not render_rest is defined or render_rest %}#}
+    {#{{ form_rest(form) }}#}
+{#{% endif %}#}
+    {#<div class="clearfix"></div>#}
+    {#</form>#}
+{#{% endspaceless %}#}
+{#{% endblock form_end %}#}
+
+{#{% block button_widget %}#}
+    {#{% spaceless %}#}
+        {#{% if label is empty %}#}
+            {#{% set label = name|humanize %}#}
+        {#{% endif %}#}
+        {#{% if icon is defined %}#}
+            {#{% set icon = '<i class="fa fa-'~icon~'"></i>' %}#}
+        {#{% else %}#}
+            {#{% set icon = '' %}#}
+        {#{% endif %}#}
+        {#{% set attr = attr|merge({'class': ('btn ' ~ attr.class|default(''))|trim}) %}#}
+        {#<button type="{{ type|default('button') }}" {{ block('button_attributes') }}>{{ icon|raw }} {{ label|trans({}, translation_domain) }}</button>#}
+    {#{% endspaceless %}#}
+{#{% endblock button_widget %}#}
+
+{#{% block form_label %}#}
+{#{% spaceless %}#}
+    {#{% if label is not sameas(false) %}#}
+        {#{% if not compound %}#}
+    {#{% set label_attr = label_attr|merge({'for': id}) %}#}
+{#{% endif %}#}
+        {#{% if required %}#}
+            {#{% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}#}
+        {#{% endif %}#}
+                {#{% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' control-label')|trim}) %}#}
+                {#{% if label is empty %}#}
+            {#{% set label = name|humanize %}#}
+        {#{% endif %}#}
+        {#<label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</label>#}
+    {#{% endif %}#}
+{#{% endspaceless %}#}
+{#{% endblock form_label %}#}
+
+{#{% block widget_attributes %}#}
+    {#{% spaceless %}#}
+        {#id="{{ id }}" name="{{ full_name }}"{% if read_only %} readonly="readonly"{% endif %}{% if disabled %} disabled="disabled"{% endif %}{% if required %} required="required"{% endif %}{% if max_length %} maxlength="{{ max_length }}"{% endif %}{% if pattern %} pattern="{{ pattern }}"{% endif %}#}
+        {#{% set attr = attr|merge({'class': (attr.class|default('') ~ ' form-control')|trim}) %}#}
+        {#{% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}#}
+    {#{% endspaceless %}#}
+{#{% endblock widget_attributes %}#}
+
+
+{#{% block form_row -%}#}
+    {#<div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">#}
+        {#{{- form_label(form) -}}#}
+        {#{{- form_widget(form) -}}#}
+        {#{{- form_errors(form) -}}#}
+    {#</div>#}
+{#{%- endblock form_row %}#}
+
+{#{% block button_row -%}#}
+    {#<div class="form-group">#}
+        {#{{- form_widget(form) -}}#}
+    {#</div>#}
+{#{%- endblock button_row %}#}
+
+{#{% block choice_row -%}#}
+    {#{% set force_error = true %}#}
+    {#{{- block('form_row') }}#}
+{#{%- endblock choice_row %}#}
+
+{#{% block date_row -%}#}
+    {#{% set force_error = true %}#}
+    {#{{- block('form_row') }}#}
+{#{%- endblock date_row %}#}
+
+{#{% block time_row -%}#}
+    {#{% set force_error = true %}#}
+    {#{{- block('form_row') }}#}
+{#{%- endblock time_row %}#}
+
+{#{% block datetime_row -%}#}
+    {#{% set force_error = true %}#}
+    {#{{- block('form_row') }}#}
+{#{%- endblock datetime_row %}#}
+
+{#{% block checkbox_row -%}#}
+    {#<div class="form-group{% if not valid %} has-error{% endif %}">#}
+        {#{{- form_widget(form) -}}#}
+        {#{{- form_label(form) -}}#}
+        {#{{- form_errors(form) -}}#}
+    {#</div>#}
+{#{%- endblock checkbox_row %}#}
+
+{#{% block radio_row -%}#}
+    {#<div class="form-group{% if not valid %} has-error{% endif %}">#}
+        {#{{- form_widget(form) -}}#}
+        {#{{- form_errors(form) -}}#}
+    {#</div>#}
+{#{%- endblock radio_row %}#}
+
+{% block form_errors -%}
+    {% if errors|length > 0 -%}
+    {% if form.parent %}<span class="help-block">{% else %}<div class="alert alert-danger">{% endif %}
+    <ul class="list-unstyled">
+        {%- for error in errors -%}
+            <li>
+                <i class="fa fa-exclamation-circle"></i>
+                {{ error.message }}
+            </li>
+        {%- endfor -%}
+    </ul>
+    {% if form.parent %}</span>{% else %}</div>{% endif %}
+    {%- endif %}
+{%- endblock form_errors %}
+
+{#{% block form_errors %}#}
+    {#{% spaceless %}#}
+        {#{% if errors|length > 0 %}#}
+            {#<div class="alert alert-danger">#}
+                {#<ul>#}
+                    {#{% for error in errors %}#}
+                        {#<li>{{ error.message }}</li>#}
+                    {#{% endfor %}#}
+                {#</ul>#}
+            {#</div>#}
+        {#{% endif %}#}
+    {#{% endspaceless %}#}
+{#{% endblock form_errors %}#}
+
+{#{% block form_row %}#}
+    {#{% spaceless %}#}
+        {#<div class="form-group">#}
+            {#{{ form_label(form) }}#}
+            {#{{ form_widget(form) }}#}
+        {#</div>#}
+        {#{{ form_errors(form) }}#}
+    {#{% endspaceless %}#}
+{#{% endblock form_row %}#}
+
+{#{% block form_start %}#}
+    {#{% spaceless %}#}
+        {#{% set method = method|upper %}#}
+        {#{% if method in ["GET", "POST"] %}#}
+            {#{% set form_method = method %}#}
+        {#{% else %}#}
+            {#{% set form_method = "POST" %}#}
+        {#{% endif %}#}
+        {#<form method="{{ form_method|lower }}" action="{{ action }}"{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}{% if multipart %} enctype="multipart/form-data"{% endif %}>#}
+        {#{% if form_method != method %}#}
+    {#<input type="hidden" name="_method" value="{{ method }}"/>#}
+{#{% endif %}#}
+    {#{% endspaceless %}#}
+{#{% endblock form_start %}#}
