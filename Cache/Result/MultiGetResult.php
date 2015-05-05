@@ -44,12 +44,12 @@ class MultiGetResult {
      * An array that holds $key => $value pairs to be cached
      * @var array
      */
-    protected $set = array();
+    protected $populated = array();
 
     public function __construct($keys, $defaultValue = null) {
         $this->keys = $keys;
         foreach ($keys as $key => $id) {
-            $this->hit($key, null);
+            $this->hit($key, $defaultValue);
         }
     }
 
@@ -60,27 +60,36 @@ class MultiGetResult {
     public function hitMissed($id, $value) {
         $key = $this->missed[$id];
         $this->hit($key, $value);
-        $this->set($key, $value);
+        $this->populate($key, $value);
     }
 
     public function miss($id, $key) {
         $this->missed[$id] = $key;
     }
 
-    public function set($key, $value) {
-        $this->set[$key] = $value;
+    public function populate($key, $value) {
+        $this->populated[$key] = $value;
     }
 
     public function getCached() {
         return $this->cached;
     }
 
+    public function getCachedById() {
+        $ret = [];
+        foreach ($this->cached as $key => $value) {
+            $id       = $this->keys[$key];
+            $ret[$id] = $value;
+        }
+        return $ret;
+    }
+
     public function getMissed() {
         return $this->missed;
     }
 
-    public function getSet() {
-        return $this->set;
+    public function getPopulated() {
+        return $this->populated;
     }
 
     public function getKeys() {
@@ -88,7 +97,7 @@ class MultiGetResult {
     }
 
     public function getMissedIds() {
-            return array_keys($this->missed);
+        return array_keys($this->missed);
     }
 
 }
