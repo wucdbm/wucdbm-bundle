@@ -1,0 +1,32 @@
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="wucdbm.session.key">session</parameter>
+    </parameters>
+
+    <services>
+
+        <!-- Array cache instance -->
+        <service id="wucdbm.cache.local" class="Wucdbm\Bundle\WucdbmBundle\Cache\Storage\ArrayStorage" scope="prototype" public="false"/>
+        <!-- Alias your own cache implementation of Wucdbm\Bundle\WucdbmBundle\Cache\Storage\AbstractStorage to this -->
+        <service id="wucdbm.cache.persistent" alias="wucdbm.cache.local" public="false"/>
+
+        <!-- Managers -->
+        <service id="wucdbm.manager.abstract" class="Wucdbm\Bundle\WucdbmBundle\Manager\AbstractManager" abstract="true">
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+            <call method="fetchServices"/>
+            <call method="setCache">
+                <argument type="service" id="wucdbm.cache.persistent" strict="false"/>
+            </call>
+            <call method="setLocalCache">
+                <argument type="service" id="wucdbm.cache.local" strict="false"/>
+            </call>
+        </service>
+        <service id="wucdbm.manager.login" class="Wucdbm\Bundle\WucdbmBundle\Manager\LoginManager" parent="wucdbm.manager.abstract"/>
+
+    </services>
+</container>

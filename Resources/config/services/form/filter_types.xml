@@ -1,0 +1,25 @@
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <!-- Form Filter Types -->
+        <service id="pmg.form.type.basic_filter_type" class="Wucdbm\Bundle\WucdbmBundle\Form\Filter\BasicFilterType">
+            <tag name="form.type" alias="wucdbm_filter_basic"/>
+        </service>
+        <service id="pmg.form.type.filter_placeholder" class="Wucdbm\Bundle\WucdbmBundle\Form\Filter\PlaceholderType">
+            <tag name="form.type" alias="wucdbm_filter_placeholder"/>
+        </service>
+        <service id="pmg.form.type.filter_text" class="Wucdbm\Bundle\WucdbmBundle\Form\Filter\FilterTextType">
+            <tag name="form.type" alias="wucdbm_filter_text"/>
+        </service>
+        <service id="pmg.form.type.filter_date_range" class="Wucdbm\Bundle\WucdbmBundle\Form\Filter\DateRangeFilterType">
+            <tag name="form.type" alias="wucdbm_filter_date_range"/>
+        </service>
+        <service id="pmg.form.type.wucdbm_filter_entity" class="Wucdbm\Bundle\WucdbmBundle\Form\Filter\EntityFilterType">
+            <tag name="form.type" alias="wucdbm_filter_entity"/>
+        </service>
+
+    </services>
+</container>
