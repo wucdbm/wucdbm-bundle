@@ -7,7 +7,7 @@
         <service id="wucdbm.expression.cache" class="Wucdbm\Bundle\WucdbmBundle\Cache\ExpressionLanguageCache" public="false">
             <argument type="service" id="wucdbm.cache.persistent" strict="false"/>
             <argument>3600</argument>
-            <argument>%revision%</argument>
+            <argument>wucdbm.expr</argument>
         </service>
 
         <service id="wucdbm.expression.language" class="Symfony\Component\ExpressionLanguage\ExpressionLanguage">
