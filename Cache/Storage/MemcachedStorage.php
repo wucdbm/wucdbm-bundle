@@ -36,17 +36,21 @@ class MemcachedStorage extends AbstractStorage {
      * @return mixed|null
      *
      * @throws CacheMissException
+     * @throws \Exception
      */
     public function get($key, $strict = true, $default = null) {
-        $value      = $this->memcached->get($key);
+        $value = $this->memcached->get($key);
         $resultCode = $this->memcached->getResultCode();
         if ($resultCode == \Memcached::RES_SUCCESS) {
             return $value;
         }
-        if (\Memcached::RES_NOTFOUND == $resultCode && $strict) {
-            throw new CacheMissException($key);
+        if (\Memcached::RES_NOTFOUND == $resultCode) {
+            if ($strict) {
+                throw new CacheMissException($key);
+            }
+            return $default;
         }
-        return $default;
+        throw new \Exception('Memcached failed with result code ' . $resultCode);
     }
 
     public function getMulti($keys) {
