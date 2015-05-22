@@ -40,7 +40,8 @@ class ExpressionLanguageCache implements ParserCacheInterface {
     }
 
     protected function getKey($key) {
-        return $this->storage->generatekey($this->prefix, $key);
+        $md5 = md5($key);
+        return $this->storage->generatekey($this->prefix, $md5);
     }
 
 }
