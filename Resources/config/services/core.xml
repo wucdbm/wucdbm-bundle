@@ -11,6 +11,7 @@
         <!-- Array cache instance -->
         <service id="wucdbm.cache.local" class="Wucdbm\Bundle\WucdbmBundle\Cache\Storage\ArrayStorage" scope="prototype" public="false"/>
         <!-- Alias your own cache implementation of Wucdbm\Bundle\WucdbmBundle\Cache\Storage\AbstractStorage to this -->
+        <!-- And it will be available for services that use persistent cache and as $this->cache in managers that extend abstract -->
         <service id="wucdbm.cache.persistent" alias="wucdbm.cache.local" public="false"/>
 
         <!-- Managers -->
