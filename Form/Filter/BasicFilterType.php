@@ -4,6 +4,8 @@ namespace Wucdbm\Bundle\WucdbmBundle\Form\Filter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class BasicFilterType extends AbstractType {
@@ -13,6 +15,22 @@ class BasicFilterType extends AbstractType {
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
+        $this->addLimitField($builder);
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($builder) {
+            // This is to make sure that if the limit was not passed in the request,
+            // the default value of the model would be used and shown when the form is rendered,
+            // instead of showing 'All' in the select, but limiting to the default instead
+            $data = $event->getData();
+            if (!isset($data['limit'])) {
+                $form = $event->getForm();
+                $data['limit'] = $form->get('limit')->getData();
+                $event->setData($data);
+            }
+        });
+    }
+
+    protected function addLimitField(FormBuilderInterface $builder) {
         $builder->add('limit', 'choice', array(
             'choices' => array(
                 0    => 'All',
@@ -24,7 +42,7 @@ class BasicFilterType extends AbstractType {
                 500  => '500 Results',
                 1000 => '1000 Results'
             ),
-            'label'   => 'Брой резултати',
+            'label'   => 'Number of items',
             'attr'    => array(
                 'class' => 'select2'
             )
