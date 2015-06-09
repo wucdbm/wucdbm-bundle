@@ -2,7 +2,6 @@
 
 namespace Wucdbm\Bundle\WucdbmBundle\Cache\Storage;
 
-/** TODO: Set prefix when generating key */
 abstract class AbstractStorage implements StorageInterface {
 
     /**
@@ -19,27 +18,33 @@ abstract class AbstractStorage implements StorageInterface {
         $this->prefix = $this->cleanupPrefix($prefix);
     }
 
-    public function generateKey() {
+    /**
+     * @param $args
+     * @return string
+     */
+    public function generateKey($args) {
         return $this->makeKey(func_get_args());
     }
 
     /**
      * Returns an array of $cacheKey => $objectId
      *
+     * @param $objectIds
+     * @param $args
      * @return array
      * @throws \Exception
      */
-    public function generateKeys() {
+    public function generateKeys($objectIds, $args) {
         $arguments = func_get_args();
-        $ids       = array_shift($arguments);
-        if (!is_array($ids)) {
+        $objectIds = array_shift($arguments);
+        if (!is_array($objectIds)) {
             throw new \Exception('First value must be an array.');
         }
         $keys = array();
-        foreach ($ids as $id) {
-            $arguments['id'] = $id;
+        foreach ($objectIds as $objectId) {
+            $arguments['id'] = $objectId;
             $key             = $this->makeKey($arguments);
-            $keys[$key]      = $id;
+            $keys[$key]      = $objectId;
         }
         return $keys;
     }
