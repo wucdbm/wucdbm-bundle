@@ -112,6 +112,19 @@
     {% endspaceless %}
 {% endblock form_widget %}
 
+{% block date_widget %}
+    {% spaceless %}
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12">
+            <div class="row">
+                {% if compound %}
+                    {{ block('form_widget_compound') }}
+                {% else %}
+                    {{ block('form_widget_simple') }}
+                {% endif %}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock date_widget %}
 
 {% block hidden_widget %}
     {% spaceless %}
