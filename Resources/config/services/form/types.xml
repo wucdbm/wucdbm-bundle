@@ -1,0 +1,13 @@
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <!-- Form Filter Types -->
+        <service id="wucdbm.form.type.wucdbm_hidden_date" class="Wucdbm\Bundle\WucdbmBundle\Form\HiddenDateType">
+            <tag name="form.type" alias="wucdbm_hidden_date"/>
+        </service>
+
+    </services>
+</container>

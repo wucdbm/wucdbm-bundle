@@ -9,14 +9,14 @@ $('.filter-date-range').on('click', '.date-range-clear', function(event) {
     var minVal = $(element).find('.min').val();
     var min;
     if (minVal) {
-        min = moment(minVal, ['X']);
+        min = moment(minVal, ['YYYY-MM-DD']);
     } else {
         min = moment().subtract(29, 'days');
     }
     var maxVal = $(element).find('.max').val();
     var max;
     if (maxVal) {
-        max = moment(maxVal, ['X']);
+        max = moment(maxVal, ['YYYY-MM-DD']);
     } else {
         max = moment().add(1, 'day');
     }
@@ -24,21 +24,21 @@ $('.filter-date-range').on('click', '.date-range-clear', function(event) {
         $(element).find('.placeholder').val(min.format('MMMM D, YYYY') + ' - ' + max.format('MMMM D, YYYY'));
     }
     $(element).daterangepicker({
-            opens: (Metronic.isRTL() || false ? 'left' : 'right'),
+            opens: 'right',
             format: 'MM/DD/YYYY',
             separator: ' to ',
+            showDropdowns: true,
             startDate: min,
             endDate: max,
-            minDate: '01/01/2006',
             maxDate: moment().add(14, 'days')
         }, function (start, end) {
             var element = $(this.element);
             var placeholder = element.find('.placeholder');
             placeholder.val(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
             var min = element.find('.min');
-            min.val(start.format('X'));
+            min.val(start.format('YYYY-MM-DD'));
             var max = element.find('.max');
-            max.val(end.format('X'));
+            max.val(end.format('YYYY-MM-DD'));
             element.parents('form').submit();
         }
     )

@@ -21,6 +21,7 @@ class WucdbmWucdbmExtension extends Extension {
         $loader->load('services/core.xml');
         $loader->load('services/expression.xml');
         $loader->load('services/form/filter_types.xml');
+        $loader->load('services/form/types.xml');
         $loader->load('services/twig.xml');
 
     }

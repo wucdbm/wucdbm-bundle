@@ -16,12 +16,12 @@ class DateRangeFilterType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-            ->add($options['min_field_name'], 'hidden', array(
+            ->add($options['min_field_name'], 'wucdbm_hidden_date', array(
                 'attr'   => array(
                     'class' => 'hidden min'
                 )
             ))
-            ->add($options['max_field_name'], 'hidden', array(
+            ->add($options['max_field_name'], 'wucdbm_hidden_date', array(
                 'attr'   => array(
                     'class' => 'hidden max'
                 )
