@@ -40,8 +40,10 @@ class BasicFilterType extends AbstractType {
                 $data = $event->getData();
                 if (!isset($data['limit'])) {
                     $form = $event->getForm();
-                    $data['limit'] = $form->get('limit')->getData();
-                    $event->setData($data);
+                    if ($form->has('limit')) {
+                        $data['limit'] = $form->get('limit')->getData();
+                        $event->setData($data);
+                    }
                 }
             });
         }
