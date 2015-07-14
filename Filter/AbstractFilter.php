@@ -163,6 +163,26 @@ class AbstractFilter {
         return $this;
     }
 
+    /**
+     * @return $this
+     */
+    public function extractPaginationParams($route) {
+        $vars = [];
+        $fields = $this->getProtectedVars();
+        foreach ($fields as $field) {
+            if ($this->$field) {
+                $vars[$field] = $this->$field;
+            }
+        }
+        $pagination = $this->getPagination();
+        $pagination->setPage($this->getPage());
+        $pagination->setLimit($this->getLimit());
+        $pagination->setParams($vars);
+        $pagination->setRoute($route);
+
+        return $this;
+    }
+
     public function transform() {
         $fields = $this->getProtectedVars();
         foreach ($fields as $field) {
