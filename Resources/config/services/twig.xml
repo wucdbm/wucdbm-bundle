@@ -5,6 +5,9 @@
     <services>
 
         <!-- Twig -->
+        <service id="wucdbm.twig.extension.array" class="Wucdbm\Bundle\WucdbmBundle\Twig\ArrayExtension">
+            <tag name="twig.extension"/>
+        </service>
         <service id="wucdbm.twig.extension.controller_action_name" class="Wucdbm\Bundle\WucdbmBundle\Twig\ControllerActionName">
             <tag name="twig.extension"/>
             <argument type="service" id="service_container"/>
