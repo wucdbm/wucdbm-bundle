@@ -2,25 +2,26 @@
 
 namespace Wucdbm\Bundle\WucdbmBundle\Twig;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ControllerActionName extends \Twig_Extension {
 
     /**
-     * @var ContainerInterface
+     * @var RequestStack
      */
-    protected $container = null;
+    protected $stack;
 
-    public function __construct(ContainerInterface $container) {
-        $this->container = $container;
+    public function __construct(RequestStack $stack) {
+        $this->stack = $stack;
     }
 
     public function getFilters() {
         return array(
+            'isActionAndController' => new \Twig_Filter_Method($this, 'isActionAndController'),
             'isController'          => new \Twig_Filter_Method($this, 'isController'),
             'isAction'              => new \Twig_Filter_Method($this, 'isAction'),
-            'isActionAndController' => new \Twig_Filter_Method($this, 'isActionAndController')
+            'isRoute'               => new \Twig_Filter_Method($this, 'isRoute'),
         );
     }
 
@@ -29,9 +30,10 @@ class ControllerActionName extends \Twig_Extension {
         return array(
             'controllerName'        => new \Twig_Function_Method($this, 'controllerName'),
             'actionName'            => new \Twig_Function_Method($this, 'actionName'),
+            'isActionAndController' => new \Twig_Function_Method($this, 'isActionAndController'),
             'isController'          => new \Twig_Function_Method($this, 'isController'),
             'isAction'              => new \Twig_Function_Method($this, 'isAction'),
-            'isActionAndController' => new \Twig_Function_Method($this, 'isActionAndController'),
+            'isRoute'               => new \Twig_Function_Method($this, 'isRoute'),
         );
     }
 
@@ -39,33 +41,73 @@ class ControllerActionName extends \Twig_Extension {
      * Get current controller name
      */
     public function controllerName() {
-        if (null !== $this->container->get('request')) {
-            $string     = $this->container->get('request')->get('_controller');
-            $parts      = explode('::', $string);
+        $request = $this->stack->getCurrentRequest();
+        if ($request instanceof Request) {
+            $string = $request->get('_controller');
+            $parts = explode('::', $string);
             $controller = $parts[0];
-            $pattern    = "#Controller\\\([a-zA-Z\\\]*)Controller#";
-            $matches    = array();
+            $pattern = "#Controller\\\([a-zA-Z\\\]*)Controller#";
+            $matches = array();
             preg_match($pattern, $controller, $matches);
             if (isset($matches[1])) {
                 return strtolower(str_replace('\\', '_', $matches[1]));
             }
+
             return '';
         }
+
+        return '';
     }
 
     /**
      * Get current action name
      */
     public function actionName() {
-        if (null !== $this->container->get('request')) {
+        $request = $this->stack->getCurrentRequest();
+        if ($request instanceof Request) {
             $pattern = "#::([a-zA-Z]*)Action#";
             $matches = array();
-            preg_match($pattern, $this->container->get('request')->get('_controller'), $matches);
+            preg_match($pattern, $request->get('_controller'), $matches);
             if (isset($matches[1])) {
                 return strtolower($matches[1]);
             }
+
             return '';
         }
+
+        return '';
+    }
+
+    /**
+     * Get current route name
+     */
+    public function routeName() {
+        $request = $this->stack->getCurrentRequest();
+        if ($request instanceof Request) {
+            return $request->get('_route');
+        }
+
+        return '';
+    }
+
+    public function isRoute($route, $print = '') {
+        if (is_array($route)) {
+            foreach ($route as $rt) {
+                if ($this->_isRoute($rt)) {
+                    return $print;
+                }
+            }
+        } else if (is_string($route)) {
+            if ($this->_isRoute($route)) {
+                return $print;
+            }
+        }
+
+        return '';
+    }
+
+    protected function _isRoute($route) {
+        return $this->routeName() == $route;
     }
 
     public function isController($controller, $print = '') {
@@ -80,6 +122,7 @@ class ControllerActionName extends \Twig_Extension {
                 return $print;
             }
         }
+
         return '';
     }
 
@@ -99,6 +142,7 @@ class ControllerActionName extends \Twig_Extension {
                 return $print;
             }
         }
+
         return '';
     }
 
@@ -110,6 +154,7 @@ class ControllerActionName extends \Twig_Extension {
         if ($this->_isAction($action) && $this->_isController($controller)) {
             return $print;
         }
+
         return '';
     }
 

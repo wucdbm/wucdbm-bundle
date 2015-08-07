@@ -10,7 +10,7 @@
         </service>
         <service id="wucdbm.twig.extension.controller_action_name" class="Wucdbm\Bundle\WucdbmBundle\Twig\ControllerActionName">
             <tag name="twig.extension"/>
-            <argument type="service" id="service_container"/>
+            <argument type="service" id="request_stack"/>
         </service>
         <service id="wucdbm.twig.extension.php" class="Wucdbm\Bundle\WucdbmBundle\Twig\PhpExtension">
             <tag name="twig.extension"/>
