@@ -77,4 +77,8 @@ class AbstractRepository extends EntityRepository {
         $builder->setMaxResults(1);
         return $builder->getQuery()->getOneOrNullResult($filter->getHydrationMode());
     }
+
+    public function getReference($entityName, $id) {
+        return $this->getEntityManager()->getReference($entityName, $id);
+    }
 }
