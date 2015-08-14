@@ -6,15 +6,17 @@ class PhpExtension extends \Twig_Extension {
 
     public function getFilters() {
         return array(
-            'get_class' => new \Twig_Filter_Method($this, 'get_class'),
-            'fqcn'      => new \Twig_Filter_Method($this, 'fqcn')
+            'get_class'   => new \Twig_Filter_Method($this, 'get_class'),
+            'fqcn'        => new \Twig_Filter_Method($this, 'fqcn'),
+            'unserialize' => new \Twig_Filter_Method($this, 'unserialize')
         );
     }
 
     public function getFunctions() {
         return array(
-            'get_class' => new \Twig_Function_Method($this, 'get_class'),
-            'fqcn'      => new \Twig_Function_Method($this, 'fqcn')
+            'get_class'   => new \Twig_Function_Method($this, 'get_class'),
+            'fqcn'        => new \Twig_Function_Method($this, 'fqcn'),
+            'unserialize' => new \Twig_Function_Method($this, 'unserialize')
         );
     }
 
@@ -23,8 +25,10 @@ class PhpExtension extends \Twig_Extension {
         if ($fqcn) {
             $parts = explode('\\', $fqcn);
             $short = array_pop($parts);
+
             return $short;
         }
+
         return $default;
     }
 
@@ -32,7 +36,12 @@ class PhpExtension extends \Twig_Extension {
         if (is_object($object)) {
             return get_class($object);
         }
+
         return $default;
+    }
+
+    public function unserialize($string) {
+        return unserialize($string);
     }
 
     public function getName() {
