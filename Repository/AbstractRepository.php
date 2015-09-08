@@ -81,4 +81,8 @@ class AbstractRepository extends EntityRepository {
     public function getReference($entityName, $id) {
         return $this->getEntityManager()->getReference($entityName, $id);
     }
+
+    public function clear($entityName = null) {
+        $this->getEntityManager()->clear($entityName);
+    }
 }
