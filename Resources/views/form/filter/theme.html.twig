@@ -8,6 +8,14 @@
 {% endspaceless %}
 {% endblock form_end %}
 
+{%- block _rest -%}
+    {% for child in form -%}
+        {% if not child.rendered %}
+            {{- form_row(child) -}}
+        {% endif %}
+    {%- endfor %}
+{% endblock _rest %}
+
 {% block form_errors %}
     {% spaceless %}
         {% if errors|length > 0 %}
