@@ -8,7 +8,8 @@ class PhpExtension extends \Twig_Extension {
         return array(
             'get_class'   => new \Twig_Filter_Method($this, 'get_class'),
             'fqcn'        => new \Twig_Filter_Method($this, 'fqcn'),
-            'unserialize' => new \Twig_Filter_Method($this, 'unserialize')
+            'unserialize' => new \Twig_Filter_Method($this, 'unserialize'),
+            'read'        => new \Twig_Filter_Function('file_get_contents'),
         );
     }
 
@@ -16,7 +17,8 @@ class PhpExtension extends \Twig_Extension {
         return array(
             'get_class'   => new \Twig_Function_Method($this, 'get_class'),
             'fqcn'        => new \Twig_Function_Method($this, 'fqcn'),
-            'unserialize' => new \Twig_Function_Method($this, 'unserialize')
+            'unserialize' => new \Twig_Function_Method($this, 'unserialize'),
+            'read'        => new \Twig_Function_Function('file_get_contents'),
         );
     }
 
