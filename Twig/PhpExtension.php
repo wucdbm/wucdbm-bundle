@@ -8,8 +8,10 @@ class PhpExtension extends \Twig_Extension {
         return array(
             'get_class'   => new \Twig_Filter_Method($this, 'get_class'),
             'fqcn'        => new \Twig_Filter_Method($this, 'fqcn'),
-            'unserialize' => new \Twig_Filter_Method($this, 'unserialize'),
+            'unserialize' => new \Twig_Filter_Function('unserialize'),
             'read'        => new \Twig_Filter_Function('file_get_contents'),
+            'intval'      => new \Twig_Filter_Function('intval'),
+            'floatval'    => new \Twig_Filter_Function('floatval'),
         );
     }
 
@@ -17,8 +19,10 @@ class PhpExtension extends \Twig_Extension {
         return array(
             'get_class'   => new \Twig_Function_Method($this, 'get_class'),
             'fqcn'        => new \Twig_Function_Method($this, 'fqcn'),
-            'unserialize' => new \Twig_Function_Method($this, 'unserialize'),
+            'unserialize' => new \Twig_Function_Function('unserialize'),
             'read'        => new \Twig_Function_Function('file_get_contents'),
+            'intval'      => new \Twig_Function_Function('intval'),
+            'floatval'    => new \Twig_Function_Function('floatval'),
         );
     }
 
@@ -40,10 +44,6 @@ class PhpExtension extends \Twig_Extension {
         }
 
         return $default;
-    }
-
-    public function unserialize($string) {
-        return unserialize($string);
     }
 
     public function getName() {
