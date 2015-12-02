@@ -3,14 +3,16 @@
 namespace Wucdbm\Bundle\WucdbmBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormTypeInterface;
 use Wucdbm\Bundle\WucdbmBundle\Cache\CacheAwareTrait;
 
-class AbstractManager extends ContainerAware {
+class AbstractManager implements ContainerAwareInterface {
 
     use CacheAwareTrait;
+    use ContainerAwareTrait;
 
     public function fetchServices() {
 

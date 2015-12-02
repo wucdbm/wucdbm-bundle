@@ -2,7 +2,9 @@
     "name": "wucdbm/wucdbm-bundle",
     "type": "symfony-bundle",
     "description": "Utilities for Symfony2",
-    "keywords": ["wucdbm"],
+    "keywords": [
+        "wucdbm"
+    ],
     "authors": [
         {
             "name": "Martin Kirilov",
@@ -10,8 +12,13 @@
             "role": "Developer"
         }
     ],
+    "require": {
+        "php": "~5.5"
+    },
     "autoload": {
-        "psr-4": { "Wucdbm\\Bundle\\WucdbmBundle\\": "" }
+        "psr-4": {
+            "Wucdbm\\Bundle\\WucdbmBundle\\": ""
+        }
     },
     "license": "GPL-3.0"
 }
