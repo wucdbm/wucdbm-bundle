@@ -5,7 +5,7 @@ namespace Wucdbm\Bundle\WucdbmBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class HiddenDateType extends AbstractType {
     
@@ -13,8 +13,11 @@ class HiddenDateType extends AbstractType {
         $transformer = new DateTimeToStringTransformer(null, null, $options['format']);
         $builder->addModelTransformer($transformer);
     }
-    
-    public function setDefaultOptions(OptionsResolverInterface $resolver) {
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults([
             'format' => 'Y-m-d'
         ]);

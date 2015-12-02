@@ -5,7 +5,7 @@ namespace Wucdbm\Bundle\WucdbmBundle\Form\Doctrine;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Wucdbm\Bundle\WucdbmBundle\Form\DataTransformer\ClassAwareDataTransformerInterface;
 
 class EntityHiddenType extends AbstractType {
@@ -35,9 +35,9 @@ class EntityHiddenType extends AbstractType {
 
     /**
      * Require the entity repository option to be set on the field
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver) {
+    public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
             'transformer' => 'Wucdbm\Bundle\WucdbmBundle\Form\DataTransformer\EntityToIdTransformer'
         ));
