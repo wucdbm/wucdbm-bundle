@@ -5,25 +5,25 @@ namespace Wucdbm\Bundle\WucdbmBundle\Twig;
 class PhpExtension extends \Twig_Extension {
 
     public function getFilters() {
-        return array(
-            'get_class'   => new \Twig_Filter_Method($this, 'get_class'),
-            'fqcn'        => new \Twig_Filter_Method($this, 'fqcn'),
-            'unserialize' => new \Twig_Filter_Function('unserialize'),
-            'read'        => new \Twig_Filter_Function('file_get_contents'),
-            'intval'      => new \Twig_Filter_Function('intval'),
-            'floatval'    => new \Twig_Filter_Function('floatval'),
-        );
+        return [
+            new \Twig_SimpleFilter('get_class', [$this, 'get_class']),
+            new \Twig_SimpleFilter('fqcn', [$this, 'fqcn']),
+            new \Twig_SimpleFilter('unserialize', 'unserialize'),
+            new \Twig_SimpleFilter('file_get_contents', 'file_get_contents'),
+            new \Twig_SimpleFilter('intval', 'intval'),
+            new \Twig_SimpleFilter('floatval', 'floatval')
+        ];
     }
 
     public function getFunctions() {
-        return array(
-            'get_class'   => new \Twig_Function_Method($this, 'get_class'),
-            'fqcn'        => new \Twig_Function_Method($this, 'fqcn'),
-            'unserialize' => new \Twig_Function_Function('unserialize'),
-            'read'        => new \Twig_Function_Function('file_get_contents'),
-            'intval'      => new \Twig_Function_Function('intval'),
-            'floatval'    => new \Twig_Function_Function('floatval'),
-        );
+        return [
+            new \Twig_SimpleFunction('get_class', [$this, 'get_class']),
+            new \Twig_SimpleFunction('fqcn', [$this, 'fqcn']),
+            new \Twig_SimpleFunction('unserialize', 'unserialize'),
+            new \Twig_SimpleFunction('file_get_contents', 'file_get_contents'),
+            new \Twig_SimpleFunction('intval', 'intval'),
+            new \Twig_SimpleFunction('floatval', 'floatval')
+        ];
     }
 
     public function get_class($object, $default = '') {

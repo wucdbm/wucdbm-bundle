@@ -17,24 +17,24 @@ class ControllerActionName extends \Twig_Extension {
     }
 
     public function getFilters() {
-        return array(
-            'isActionAndController' => new \Twig_Filter_Method($this, 'isActionAndController'),
-            'isController'          => new \Twig_Filter_Method($this, 'isController'),
-            'isAction'              => new \Twig_Filter_Method($this, 'isAction'),
-            'isRoute'               => new \Twig_Filter_Method($this, 'isRoute'),
-        );
+        return [
+            new \Twig_SimpleFilter('isActionAndController', [$this, 'isActionAndController']),
+            new \Twig_SimpleFilter('isController', [$this, 'isController']),
+            new \Twig_SimpleFilter('isAction', [$this, 'isAction']),
+            new \Twig_SimpleFilter('isRoute', [$this, 'isRoute'])
+        ];
     }
 
 
     public function getFunctions() {
-        return array(
-            'controllerName'        => new \Twig_Function_Method($this, 'controllerName'),
-            'actionName'            => new \Twig_Function_Method($this, 'actionName'),
-            'isActionAndController' => new \Twig_Function_Method($this, 'isActionAndController'),
-            'isController'          => new \Twig_Function_Method($this, 'isController'),
-            'isAction'              => new \Twig_Function_Method($this, 'isAction'),
-            'isRoute'               => new \Twig_Function_Method($this, 'isRoute'),
-        );
+        return [
+            new \Twig_SimpleFunction('controllerName', [$this, 'controllerName']),
+            new \Twig_SimpleFunction('actionName', [$this, 'actionName']),
+            new \Twig_SimpleFunction('isActionAndController', [$this, 'isActionAndController']),
+            new \Twig_SimpleFunction('isController', [$this, 'isController']),
+            new \Twig_SimpleFunction('isAction', [$this, 'isAction']),
+            new \Twig_SimpleFunction('isRoute', [$this, 'isRoute'])
+        ];
     }
 
     /**

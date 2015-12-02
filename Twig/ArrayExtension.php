@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 class ArrayExtension extends \Twig_Extension {
 
     public function getFilters() {
-        return array(
-            'array_chunk' => new \Twig_Filter_Method($this, 'array_chunk')
-        );
+        return [
+            new \Twig_SimpleFilter('array_chunk', [$this, 'array_chunk'])
+        ];
     }
 
     public function array_chunk($array, $size, $preserve_key = false) {
@@ -19,9 +19,10 @@ class ArrayExtension extends \Twig_Extension {
         if ($array instanceof Collection) {
             $ret = [];
             $key = 0;
-            while (count($slice = $array->slice($key*$size, $size))) {
+            while (count($slice = $array->slice($key * $size, $size))) {
                 $ret[$key++] = $slice;
             }
+
             return $ret;
         }
     }

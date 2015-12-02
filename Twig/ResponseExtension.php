@@ -7,16 +7,17 @@ use Symfony\Component\HttpFoundation\Response;
 class ResponseExtension extends \Twig_Extension {
 
     public function getFilters() {
-        return array(
-            'responseStatus' => new \Twig_Filter_Method($this, 'responseStatus')
-        );
+        return [
+            new \Twig_SimpleFilter('responseStatus', [$this, 'responseStatus'])
+        ];
     }
 
     public function responseStatus($code) {
         if (isset(Response::$statusTexts[$code])) {
             return Response::$statusTexts[$code];
         }
-        return 'No status text for code ' . $code;
+
+        return sprintf('Status Code %s', $code);
     }
 
     public function getName() {

@@ -27,19 +27,19 @@ class SumExtension extends \Twig_Extension {
     }
 
     public function getFilters() {
-        return array(
-            'implode' => new \Twig_Filter_Method($this, 'implode'),
-            'sum'     => new \Twig_Filter_Method($this, 'sum'),
-            'count'   => new \Twig_Filter_Method($this, 'count')
-        );
+        return [
+            'implode' => new \Twig_SimpleFilter('implode', [$this, 'implode']),
+            'sum'     => new \Twig_SimpleFilter('sum', [$this, 'sum']),
+            'count'   => new \Twig_SimpleFilter('count', [$this, 'count'])
+        ];
     }
 
     public function getFunctions() {
-        return array(
-            'implode' => new \Twig_Function_Method($this, 'implode'),
-            'sum'     => new \Twig_Function_Method($this, 'sum'),
-            'count'   => new \Twig_Function_Method($this, 'count')
-        );
+        return [
+            'implode' => new \Twig_SimpleFunction('implode', [$this, 'implode']),
+            'sum'     => new \Twig_SimpleFunction('sum', [$this, 'sum']),
+            'count'   => new \Twig_SimpleFunction('count', [$this, 'count'])
+        ];
     }
 
     public function implode($arrayOrObject, $glue, $propertyPath = null, $expression = null) {
