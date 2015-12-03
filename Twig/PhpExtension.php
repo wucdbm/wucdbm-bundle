@@ -11,7 +11,9 @@ class PhpExtension extends \Twig_Extension {
             new \Twig_SimpleFilter('unserialize', 'unserialize'),
             new \Twig_SimpleFilter('file_get_contents', 'file_get_contents'),
             new \Twig_SimpleFilter('intval', 'intval'),
-            new \Twig_SimpleFilter('floatval', 'floatval')
+            new \Twig_SimpleFilter('floatval', 'floatval'),
+            new \Twig_SimpleFilter('ip2long', 'ip2long'),
+            new \Twig_SimpleFilter('long2ip', 'long2ip')
         ];
     }
 
@@ -22,7 +24,9 @@ class PhpExtension extends \Twig_Extension {
             new \Twig_SimpleFunction('unserialize', 'unserialize'),
             new \Twig_SimpleFunction('file_get_contents', 'file_get_contents'),
             new \Twig_SimpleFunction('intval', 'intval'),
-            new \Twig_SimpleFunction('floatval', 'floatval')
+            new \Twig_SimpleFunction('floatval', 'floatval'),
+            new \Twig_SimpleFunction('ip2long', 'ip2long'),
+            new \Twig_SimpleFunction('long2ip', 'long2ip')
         ];
     }
 
