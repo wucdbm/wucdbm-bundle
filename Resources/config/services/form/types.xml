@@ -4,9 +4,8 @@
 
     <services>
 
-        <!-- Form Filter Types -->
         <service id="wucdbm.form.type.wucdbm_hidden_date" class="Wucdbm\Bundle\WucdbmBundle\Form\HiddenDateType">
-            <tag name="form.type" alias="wucdbm_hidden_date"/>
+            <tag name="form.type"/>
         </service>
 
     </services>
