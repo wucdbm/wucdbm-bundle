@@ -11,7 +11,7 @@
         <service id="wucdbm.form.type.filter_placeholder" class="Wucdbm\Bundle\WucdbmBundle\Form\Filter\PlaceholderType">
             <tag name="form.type" alias="wucdbm_filter_placeholder"/>
         </service>
-        <service id="wucdbm.form.type.filter_text" class="Wucdbm\Bundle\WucdbmBundle\Form\Filter\FilterTextType">
+        <service id="wucdbm.form.type.filter_text" class="Wucdbm\Bundle\WucdbmBundle\Form\Filter\TextFilterType">
             <tag name="form.type" alias="wucdbm_filter_text"/>
         </service>
         <service id="wucdbm.form.type.filter_date_range" class="Wucdbm\Bundle\WucdbmBundle\Form\Filter\DateRangeFilterType">
