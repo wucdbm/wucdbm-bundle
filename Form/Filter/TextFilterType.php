@@ -38,13 +38,6 @@ class TextFilterType extends AbstractType {
         ));
     }
 
-    /**
-     * @return string
-     */
-    public function getName() {
-        return 'wucdbm_filter_text';
-    }
-
     public function getParent() {
         return 'text';
     }

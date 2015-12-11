@@ -55,11 +55,4 @@ class EntityHiddenType extends AbstractType {
     public function getParent() {
         return 'hidden';
     }
-
-    /**
-     * @return string
-     */
-    public function getName() {
-        return 'entity_hidden';
-    }
 }

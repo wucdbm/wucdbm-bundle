@@ -64,11 +64,4 @@ class BasicFilterType extends AbstractType {
         ));
     }
 
-    /**
-     * @return string
-     */
-    public function getName() {
-        return 'wucdbm_filter_basic';
-    }
-
 }

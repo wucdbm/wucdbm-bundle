@@ -9,14 +9,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PlaceholderType extends AbstractType {
 
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options) {
-
-    }
-
-    /**
      * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver) {
@@ -28,13 +20,6 @@ class PlaceholderType extends AbstractType {
                 'placeholder' => 'Period: From - To'
             )
         ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getName() {
-        return 'wucdbm_filter_placeholder';
     }
 
     public function getParent() {

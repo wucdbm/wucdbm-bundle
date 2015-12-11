@@ -22,11 +22,4 @@ class EntityFilterType extends AbstractType {
         return 'entity';
     }
 
-    /**
-     * @return string
-     */
-    public function getName() {
-        return 'wucdbm_filter_entity';
-    }
-
 }

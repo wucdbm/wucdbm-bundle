@@ -26,8 +26,4 @@ class HiddenDateType extends AbstractType {
     public function getParent() {
         return 'hidden';
     }
-    
-    public function getName() {
-        return 'wucdbm_hidden_date';
-    }
 }

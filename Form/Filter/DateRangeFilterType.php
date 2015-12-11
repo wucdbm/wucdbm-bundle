@@ -53,11 +53,4 @@ class DateRangeFilterType extends AbstractType {
         ));
     }
 
-    /**
-     * @return string
-     */
-    public function getName() {
-        return 'wucdbm_filter_date_range';
-    }
-
 }
