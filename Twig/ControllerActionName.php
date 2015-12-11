@@ -162,7 +162,4 @@ class ControllerActionName extends \Twig_Extension {
         return 'controller_action_name';
     }
 
-    public function getAlias() {
-        return 'controller_action_name';
-    }
 }

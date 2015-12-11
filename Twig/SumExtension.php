@@ -103,7 +103,4 @@ class SumExtension extends \Twig_Extension {
         return 'wucdbm_sum';
     }
 
-    public function getAlias() {
-        return 'wucdbm_sum';
-    }
 }

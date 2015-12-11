@@ -25,13 +25,11 @@ class ArrayExtension extends \Twig_Extension {
 
             return $ret;
         }
+        throw new \Exception('Parameter "array" is not an array or any of the supported collection types in "array_chunk".');
     }
 
     public function getName() {
         return 'wucdbm_array';
     }
 
-    public function getAlias() {
-        return 'wucdbm_array';
-    }
 }

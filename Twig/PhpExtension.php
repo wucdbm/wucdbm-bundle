@@ -54,7 +54,4 @@ class PhpExtension extends \Twig_Extension {
         return 'wucdbm_php';
     }
 
-    public function getAlias() {
-        return 'wucdbm_php';
-    }
 }

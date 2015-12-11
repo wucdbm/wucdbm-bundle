@@ -24,7 +24,4 @@ class ResponseExtension extends \Twig_Extension {
         return 'wucdbm_response';
     }
 
-    public function getAlias() {
-        return 'wucdbm_response';
-    }
 }
