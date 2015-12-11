@@ -9,16 +9,16 @@
             <tag name="form.type" alias="wucdbm_filter_basic"/>
         </service>
         <service id="wucdbm.form.type.filter_placeholder" class="Wucdbm\Bundle\WucdbmBundle\Form\Filter\PlaceholderType">
-            <tag name="form.type" alias="wucdbm_filter_placeholder"/>
+            <tag name="form.type" />
         </service>
         <service id="wucdbm.form.type.filter_text" class="Wucdbm\Bundle\WucdbmBundle\Form\Filter\TextFilterType">
-            <tag name="form.type" alias="wucdbm_filter_text"/>
+            <tag name="form.type" />
         </service>
         <service id="wucdbm.form.type.filter_date_range" class="Wucdbm\Bundle\WucdbmBundle\Form\Filter\DateRangeFilterType">
-            <tag name="form.type" alias="wucdbm_filter_date_range"/>
+            <tag name="form.type" />
         </service>
         <service id="wucdbm.form.type.wucdbm_filter_entity" class="Wucdbm\Bundle\WucdbmBundle\Form\Filter\EntityFilterType">
-            <tag name="form.type" alias="wucdbm_filter_entity"/>
+            <tag name="form.type" />
         </service>
 
     </services>
