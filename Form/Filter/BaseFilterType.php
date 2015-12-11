@@ -2,7 +2,9 @@
 
 namespace Wucdbm\Bundle\WucdbmBundle\Form\Filter;
 
-abstract class BaseFilterType {
+use Symfony\Component\Form\AbstractType;
+
+abstract class BaseFilterType extends AbstractType {
 
     public function getParent() {
         return 'Wucdbm\Bundle\WucdbmBundle\Form\Filter\BasicFilterType';
