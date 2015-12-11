@@ -60,8 +60,12 @@ class BasicFilterType extends AbstractType {
             'method'             => 'GET',
             'csrf_protection'    => false,
             'allow_extra_fields' => true,
-            'enable_limit' => true
+            'enable_limit'       => true
         ));
+    }
+
+    public function getBlockPrefix() {
+        return '';
     }
 
 }
