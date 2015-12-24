@@ -19,7 +19,6 @@
             <call method="setContainer">
                 <argument type="service" id="service_container"/>
             </call>
-            <call method="fetchServices"/>
             <call method="setCache">
                 <argument type="service" id="wucdbm.cache.persistent" strict="false"/>
             </call>
