@@ -14,10 +14,6 @@ class AbstractManager implements ContainerAwareInterface {
     use CacheAwareTrait;
     use ContainerAwareTrait;
 
-    public function fetchServices() {
-
-    }
-
     /**
      * Shortcut for $doctrine->getManager
      * @return EntityManager
