@@ -2,20 +2,15 @@
 
 namespace Wucdbm\Bundle\WucdbmBundle\Filter;
 
-use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
-use Wucdbm\Bundle\WucdbmBundle\DataTransformer\ConditionalDataTransformer;
-use Wucdbm\Bundle\WucdbmBundle\DataTransformer\DataTransformerAwareTrait;
 
 /**
  * Class AbstractFilter
  * @package Wucdbm\Bundle\WucdbmBundle\Filter
  */
 class AbstractFilter {
-
-    use DataTransformerAwareTrait;
 
     private $page = 1;
 
@@ -99,6 +94,7 @@ class AbstractFilter {
 
     public function setOption($name, $value) {
         $this->_options[$name] = $value;
+
         return $this;
     }
 
@@ -113,6 +109,7 @@ class AbstractFilter {
         if (null === $this->reflection) {
             $this->reflection = new \ReflectionClass($this);
         }
+
         return $this->reflection;
     }
 
@@ -122,11 +119,11 @@ class AbstractFilter {
      * @param string $namespace
      */
     protected function _load(Request $request, $type = null, $namespace = '') {
-        $bag      = $this->getBagByType($request, $type);
-        $pageVar  = $this->getVarPathForNamespace($namespace, $this->getPageVar());
-        $limitVar = $this->getVarPathForNamespace($namespace, $this->getLimitVar());
-        $page     = $bag->get($pageVar, 1, true);
-        $limit    = $bag->get($limitVar, $this->getLimit(), true);
+        $bag = $this->getBagByType($request, $type);
+        $bag->get('asd');
+        $vars = $bag->get($namespace, []);
+        $page = array_key_exists($this->getPageVar(), $vars) ? $vars[$this->getPageVar()] : 1;
+        $limit = array_key_exists($this->getLimitVar(), $vars) ? $vars[$this->getLimitVar()] : $this->getLimit();
         if (0 == $limit) {
             $limit = null;
         }
@@ -183,60 +180,6 @@ class AbstractFilter {
         return $this;
     }
 
-    public function transform() {
-        $fields = $this->getProtectedVars();
-        foreach ($fields as $field) {
-            $this->$field = $this->getTransformedValue($field, $this->$field);
-        }
-        return $this;
-    }
-
-    public function reverseTransform() {
-        $fields = $this->getProtectedVars();
-        foreach ($fields as $field) {
-            $this->$field = $this->getReverseTransformedValue($field, $this->$field);
-        }
-        return $this;
-    }
-
-    public function getTransformedValue($field, $value = null) {
-        if (null === $value) {
-            $value = $this->$field;
-        }
-        $transformers = $this->getDataTransformers($field);
-        foreach ($transformers as $transformer) {
-            if ($transformer instanceof ConditionalDataTransformer) {
-                if ($transformer->isEligible($value)) {
-                    return $transformer->transform($value);
-                }
-                continue;
-            }
-            if ($transformer instanceof DataTransformerInterface) {
-                return $transformer->transform($value);
-            }
-        }
-        return $value;
-    }
-
-    public function getReverseTransformedValue($field, $value = null) {
-        if (null === $value) {
-            $value = $this->$field;
-        }
-        $transformers = $this->getDataTransformers($field);
-        foreach ($transformers as $transformer) {
-            if ($transformer instanceof ConditionalDataTransformer) {
-                if ($transformer->isReverseEligible($value)) {
-                    return $transformer->reverseTransform($value);
-                }
-                continue;
-            }
-            if ($transformer instanceof DataTransformerInterface) {
-                return $transformer->reverseTransform($value);
-            }
-        }
-        return $value;
-    }
-
     /**
      * @param Request $request
      * @param Form $form
@@ -245,6 +188,7 @@ class AbstractFilter {
     public function load(Request $request, Form $form) {
         $this->_load($request, $form->getConfig()->getMethod(), $form->getName());
         $form->handleRequest($request);
+
         return $this;
     }
 
@@ -257,6 +201,7 @@ class AbstractFilter {
         if ($namespace) {
             return $namespace . '[' . $var . ']';
         }
+
         return $var;
     }
 
@@ -272,6 +217,7 @@ class AbstractFilter {
         if ('GET' == $type) {
             return $request->query;
         }
+
         return $request->query;
     }
 
@@ -280,28 +226,13 @@ class AbstractFilter {
      */
     public function getProtectedVars() {
         $reflection = $this->getReflection();
-        $vars       = $reflection->getProperties(\ReflectionProperty::IS_PROTECTED);
-        $ret        = array();
+        $vars = $reflection->getProperties(\ReflectionProperty::IS_PROTECTED);
+        $ret = array();
         foreach ($vars as $var) {
             $ret[] = $var->name;
         }
-        return $ret;
-    }
 
-    /**
-     * @return array
-     */
-    public function getProtectedValues() {
-        $vars   = $this->getProtectedVars();
-        $params = array();
-        foreach ($vars as $var) {
-            if (is_object($this->$var)) {
-                $params[$var] = $this->$var->getId();
-            } else {
-                $params[$var] = $this->$var;
-            }
-        }
-        return $params;
+        return $ret;
     }
 
     /**
@@ -309,27 +240,12 @@ class AbstractFilter {
      */
     public function enablePagination() {
         $this->getPagination()->enable();
+
         return $this;
     }
 
     public function getMd5() {
-        // can't serialize \Closure
-        $dataTransformers = $this->getAllDataTransformers();
-        $this->removeAllDataTransformers();
-        $md5 = md5(serialize($this));
-        $this->setDataTransformers($dataTransformers);
-        return $md5;
-    }
-
-    /**
-     * @param $name
-     * @return bool
-     */
-    public function has($name) {
-        if ($this->$name === 0) {
-            return true;
-        }
-        return isset($this->$name) && $this->$name != '' && $this->$name != null;
+        return md5(serialize($this));
     }
 
     /**
@@ -340,7 +256,7 @@ class AbstractFilter {
     public function __set($name, $value) {
         $reflection = $this->getReflection();
         if (!$reflection->hasProperty($name)) {
-            throw new \Exception('Filter ' . get_class($this) . ' does not have property [' . $name . ']. Maybe you forgot to implement it first?');
+            throw $this->createPropertyMissingException($name);
         }
         $this->$name = $value;
     }
@@ -353,9 +269,14 @@ class AbstractFilter {
     public function __get($name) {
         $reflection = $this->getReflection();
         if (!$reflection->hasProperty($name)) {
-            throw new \Exception('Filter ' . get_class($this) . ' does not have property [' . $name . ']. Maybe you forgot to implement it first?');
+            throw $this->createPropertyMissingException($name);
         }
+
         return $this->$name;
+    }
+
+    protected function createPropertyMissingException($name) {
+        return new \Exception('Filter ' . get_class($this) . ' does not have property [' . $name . ']. Maybe you forgot to implement it first?');
     }
 
     /**
