@@ -267,19 +267,6 @@ class AbstractFilter {
         return new \Exception('Filter ' . get_class($this) . ' does not have property [' . $name . ']. Maybe you forgot to implement it first?');
     }
 
-    /**
-     * @param $name
-     * @param $arguments
-     * @return mixed
-     */
-    public function __call($name, $arguments) {
-        if (is_callable('get_' . $name)) {
-            return call_user_func_array(array($this, 'get_' . $name), $arguments);
-        } else if (isset($this->$name)) {
-            return $this->$name;
-        }
-    }
-
     public function __construct() {
         $pagination = new Pagination($this);
         $this->setPagination($pagination);
