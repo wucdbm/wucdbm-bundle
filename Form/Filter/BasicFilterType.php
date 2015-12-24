@@ -16,22 +16,22 @@ class BasicFilterType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         if ($options['enable_limit']) {
-            $builder->add('limit', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
-                'choices' => array(
-                    0    => 'All',
-                    10   => '10 Results',
-                    20   => '20 Results',
-                    50   => '50 Results',
-                    100  => '100 Results',
-                    250  => '250 Results',
-                    500  => '500 Results',
-                    1000 => '1000 Results'
-                ),
-                'label'   => 'Number of items',
-                'attr'    => array(
+            $builder->add('limit', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+                'choices' => [
+                    'All'          => 0,
+                    '10 Results'   => 10,
+                    '20 Results'   => 20,
+                    '50 Results'   => 50,
+                    '100 Results'  => 100,
+                    '250 Results'  => 250,
+                    '500 Results'  => 500,
+                    '1000 Results' => 1000
+                ],
+                'label'   => false,
+                'attr'    => [
                     'class' => 'select2'
-                )
-            ));
+                ]
+            ]);
 
             $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) use ($builder) {
                 // This is to make sure that if the limit was not passed in the request,
