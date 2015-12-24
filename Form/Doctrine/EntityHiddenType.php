@@ -53,6 +53,6 @@ class EntityHiddenType extends AbstractType {
      * @return string
      */
     public function getParent() {
-        return 'hidden';
+        return 'Symfony\Component\Form\Extension\Core\Type\HiddenType';
     }
 }
