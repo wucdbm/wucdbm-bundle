@@ -150,9 +150,10 @@ class AbstractFilter {
         $bag = $this->getBagByType($request, $this->getType());
 
         $fields = $this->getProtectedVars();
+        $vars = $bag->get($namespace);
         foreach ($fields as $field) {
-            $varPath = $this->getVarPathForNamespace($namespace, $field);
-            if ($val = $bag->get($varPath, null, true)) {
+            $val = array_key_exists($field, $vars) ? $vars[$field] : null;
+            if ($val) {
                 $this->$field = $val;
             }
         }
@@ -190,19 +191,6 @@ class AbstractFilter {
         $form->handleRequest($request);
 
         return $this;
-    }
-
-    /**
-     * @param $namespace
-     * @param $var
-     * @return string
-     */
-    public function getVarPathForNamespace($namespace, $var) {
-        if ($namespace) {
-            return $namespace . '[' . $var . ']';
-        }
-
-        return $var;
     }
 
     /**
