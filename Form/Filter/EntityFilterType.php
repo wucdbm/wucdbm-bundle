@@ -19,7 +19,7 @@ class EntityFilterType extends AbstractType {
     }
 
     public function getParent() {
-        return 'entity';
+        return 'Symfony\Bridge\Doctrine\Form\Type\EntityType';
     }
 
 }
