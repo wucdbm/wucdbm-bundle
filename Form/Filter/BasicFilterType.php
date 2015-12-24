@@ -16,7 +16,7 @@ class BasicFilterType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         if ($options['enable_limit']) {
-            $builder->add('limit', 'choice', array(
+            $builder->add('limit', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
                 'choices' => array(
                     0    => 'All',
                     10   => '10 Results',
