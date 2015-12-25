@@ -120,7 +120,6 @@ class AbstractFilter {
      */
     protected function _load(Request $request, $type = null, $namespace = '') {
         $bag = $this->getBagByType($request, $type);
-        $bag->get('asd');
         $vars = $bag->get($namespace, []);
         $page = array_key_exists($this->getPageVar(), $vars) ? $vars[$this->getPageVar()] : 1;
         $limit = array_key_exists($this->getLimitVar(), $vars) ? $vars[$this->getLimitVar()] : $this->getLimit();
@@ -150,7 +149,7 @@ class AbstractFilter {
         $bag = $this->getBagByType($request, $this->getType());
 
         $fields = $this->getProtectedVars();
-        $vars = $bag->get($namespace);
+        $vars = $bag->get($namespace, []);
         foreach ($fields as $field) {
             $val = array_key_exists($field, $vars) ? $vars[$field] : null;
             if ($val) {
