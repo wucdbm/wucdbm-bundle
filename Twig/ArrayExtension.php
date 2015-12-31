@@ -2,8 +2,6 @@
 
 namespace Wucdbm\Bundle\WucdbmBundle\Twig;
 
-use Doctrine\Common\Collections\Collection;
-
 class ArrayExtension extends \Twig_Extension {
 
     public function getFilters() {
@@ -12,20 +10,17 @@ class ArrayExtension extends \Twig_Extension {
         ];
     }
 
-    public function array_chunk($array, $size, $preserve_key = false) {
-        if (is_array($array)) {
-            return array_chunk($array, $size, $preserve_key);
-        }
-        if ($array instanceof Collection) {
-            $ret = [];
-            $key = 0;
-            while (count($slice = $array->slice($key * $size, $size))) {
-                $ret[$key++] = $slice;
+    function array_chunk($input, $size, $preserve_keys = null) {
+        if ($input instanceof \Traversable) {
+            $arr = array();
+            foreach ($input as $val) {
+                $arr[] = $val;
             }
 
-            return $ret;
+            return array_chunk($arr, $size, $preserve_keys);
         }
-        throw new \Exception('Parameter "array" is not an array or any of the supported collection types in "array_chunk".');
+
+        return array_chunk($input, $size, $preserve_keys);
     }
 
     public function getName() {
