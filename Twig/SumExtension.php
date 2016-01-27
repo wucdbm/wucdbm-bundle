@@ -28,17 +28,19 @@ class SumExtension extends \Twig_Extension {
 
     public function getFilters() {
         return [
-            'implode' => new \Twig_SimpleFilter('implode', [$this, 'implode']),
-            'sum'     => new \Twig_SimpleFilter('sum', [$this, 'sum']),
-            'count'   => new \Twig_SimpleFilter('count', [$this, 'count'])
+            new \Twig_SimpleFilter('implode', [$this, 'implode']),
+            new \Twig_SimpleFilter('sum', [$this, 'sum']),
+            new \Twig_SimpleFilter('count', [$this, 'count']),
+            new \Twig_SimpleFilter('array_unique', [$this, 'array_unique'])
         ];
     }
 
     public function getFunctions() {
         return [
-            'implode' => new \Twig_SimpleFunction('implode', [$this, 'implode']),
-            'sum'     => new \Twig_SimpleFunction('sum', [$this, 'sum']),
-            'count'   => new \Twig_SimpleFunction('count', [$this, 'count'])
+            new \Twig_SimpleFunction('implode', [$this, 'implode']),
+            new \Twig_SimpleFunction('sum', [$this, 'sum']),
+            new \Twig_SimpleFunction('count', [$this, 'count']),
+            new \Twig_SimpleFunction('array_unique', [$this, 'array_unique'])
         ];
     }
 
@@ -80,6 +82,26 @@ class SumExtension extends \Twig_Extension {
         }
 
         return $sum;
+    }
+
+    public function array_unique($arrayOrObject, $propertyPath = null, $expression = null, $sortType = SORT_REGULAR) {
+        $values = [];
+        foreach ($arrayOrObject as $value) {
+            $shouldAdd = true;
+            if (null !== $expression) {
+                $shouldAdd = $this->language->evaluate($expression, [
+                    'value' => $value
+                ]);
+            }
+            if ($shouldAdd) {
+                if ($propertyPath) {
+                    $value = $this->accessor->getValue($value, $propertyPath);
+                }
+                $values[] = $value;
+            }
+        }
+
+        return array_unique($values, $sortType);
     }
 
     public function count($arrayOrObject, $expression = null) {
