@@ -31,6 +31,9 @@ class LoginManager extends AbstractManager {
         // This one uses the FIREWALL NAME
         // This can be used to set the address the user should be redirected to, but is rather useless in this situation?
 //        $session->set('_security.'.$area.'.target_path', 'https://website.com/app_dev.php/some/address');
+
+        $event = new InteractiveLoginEvent($request, $token);
+        $this->container->get("event_dispatcher")->dispatch('security.interactive_login', $event);
     }
 
     /**
