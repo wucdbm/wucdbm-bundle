@@ -2,7 +2,7 @@
 
 namespace Wucdbm\Bundle\WucdbmBundle\Form;
 
-use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\AbstractType as SymfonyAbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Wucdbm\Bundle\WucdbmBundle\Form\DataTransformer\Ip2LongTransformer;
 
-class IpLongType extends AbstractType {
+class IpLongType extends SymfonyAbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $transformer = new Ip2LongTransformer();
