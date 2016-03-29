@@ -2,13 +2,13 @@
 
 namespace Wucdbm\Bundle\WucdbmBundle\Form;
 
-use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\AbstractType as SymfonyAbstractType;
 use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class HiddenDateType extends AbstractType {
-    
+class HiddenDateType extends SymfonyAbstractType {
+
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $transformer = new DateTimeToStringTransformer(null, null, $options['format']);
         $builder->addModelTransformer($transformer);
@@ -22,7 +22,7 @@ class HiddenDateType extends AbstractType {
             'format' => 'Y-m-d'
         ]);
     }
-    
+
     public function getParent() {
         return 'Symfony\Component\Form\Extension\Core\Type\HiddenType';
     }
