@@ -48,6 +48,7 @@ class MemcachedStorage extends AbstractStorage {
             if ($strict) {
                 throw new CacheMissException($key);
             }
+
             return $default;
         }
         throw new \Exception('Memcached failed with result code ' . $resultCode);
@@ -55,7 +56,7 @@ class MemcachedStorage extends AbstractStorage {
 
     public function getMulti($keys) {
         $result = new MultiGetResult($keys);
-        $null   = null;
+        $null = null;
         $cached = $this->memcached->getMulti(array_keys($keys), $null, \Memcached::GET_PRESERVE_ORDER);
         foreach ($cached as $key => $value) {
             if (null === $value) {
@@ -65,6 +66,7 @@ class MemcachedStorage extends AbstractStorage {
                 $result->hit($key, $value);
             }
         }
+
         return $result;
     }
 

@@ -5,6 +5,9 @@ namespace Wucdbm\Bundle\WucdbmBundle\Cache\Output;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Formatter\OutputFormatterStyleInterface;
 
+/**
+ * @deprecated use \Wucdbm\Bundle\WucdbmBundle\Output\Formatter\SimpleParagraphFormatter instead
+ */
 class SimpleParagraphFormatter implements OutputFormatterInterface {
 
     private $decorated;
