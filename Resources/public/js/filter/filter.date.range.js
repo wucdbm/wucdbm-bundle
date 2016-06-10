@@ -29,8 +29,7 @@ $('.filter-date-range').on('click', '.date-range-clear', function(event) {
             separator: ' to ',
             showDropdowns: true,
             startDate: min,
-            endDate: max,
-            maxDate: moment().add(14, 'days')
+            endDate: max
         }, function (start, end) {
             var element = $(this.element);
             var placeholder = element.find('.placeholder');
