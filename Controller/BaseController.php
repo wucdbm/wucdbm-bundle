@@ -7,13 +7,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 abstract class BaseController extends Controller {
 
-    public function json($data = null, $status = 200, $headers = array()) {
-        $headers = array_merge($headers, [
-            'Content-Type' => 'application/json'
-        ]);
-        return new JsonResponse($data, $status, $headers);
-    }
-
     public function witter($data = null, $status = 200, $headers = array()) {
         return $this->json(array('witter' => $data), $status, $headers);
     }
