@@ -64,4 +64,11 @@ abstract class AbstractStorage implements StorageInterface {
         return $this->prefix;
     }
 
+    /**
+     * @param string $prefix
+     */
+    public function setPrefix($prefix) {
+        $this->prefix = $prefix;
+    }
+
 }
