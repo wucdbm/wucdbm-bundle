@@ -88,6 +88,10 @@ class AbstractFilter {
         return $this->setOption(self::OPTION_HYDRATION, self::OPTION_HYDRATION_ARRAY);
     }
 
+    public function isHydrationArray() {
+        return $this->isOption(self::OPTION_HYDRATION, self::OPTION_HYDRATION_ARRAY);
+    }
+
     public function getOption($name) {
         return $this->_options[$name];
     }
