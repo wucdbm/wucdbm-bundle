@@ -13,12 +13,20 @@ class ArrayExtension extends \Twig_Extension {
 
     /**
      * @param $encoded
-     * @return \Generator
+     * @return \Generator|null
      */
     public function urlEncodedToArray($encoded) {
+        if (!$encoded) {
+            return;
+        }
+
         $array = explode('&', $encoded);
 
         foreach ($array as $v) {
+            if (false === strpos($v, '=')) {
+                continue;
+            }
+
             list($key, $value) = explode('=', $v);
             yield [$key => $value];
         }
