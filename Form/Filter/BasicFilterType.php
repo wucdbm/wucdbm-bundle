@@ -27,7 +27,6 @@ class BasicFilterType extends AbstractType {
                     '500 Results'  => 500,
                     '1000 Results' => 1000
                 ],
-                'choices_as_values' => true,
                 'label'   => false,
                 'attr'    => [
                     'class' => 'select2'
