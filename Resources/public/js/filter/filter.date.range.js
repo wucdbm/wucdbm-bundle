@@ -1,4 +1,4 @@
-$('.filter-date-range').on('click', '.date-range-clear', function(event) {
+$('.filter-date-range').on('click', '.date-range-clear', function (event) {
     var element = $(event.target).parents('.filter-date-range');
     element.find('.min').val('');
     element.find('.max').val('');
@@ -28,8 +28,17 @@ $('.filter-date-range').on('click', '.date-range-clear', function(event) {
             format: 'MM/DD/YYYY',
             separator: ' to ',
             showDropdowns: true,
+            alwaysShowCalendars: true,
             startDate: min,
-            endDate: max
+            endDate: max,
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
         }, function (start, end) {
             var element = $(this.element);
             var placeholder = element.find('.placeholder');
