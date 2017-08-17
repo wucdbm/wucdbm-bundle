@@ -12,6 +12,7 @@ $('.filter-date-range').on('click', '.date-range-clear', function (event) {
         separator: ' to ',
         showDropdowns: true,
         alwaysShowCalendars: true,
+        autoApply: true,
         ranges: {
             'Today': [moment(), moment()],
             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
